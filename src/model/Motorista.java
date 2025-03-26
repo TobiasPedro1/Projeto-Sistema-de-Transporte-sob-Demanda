@@ -12,11 +12,11 @@ public class Motorista extends Pessoa {
         this.validado = false;
     }
 
-    public String getHabilitação() {
+    public String getHabilitacao() {
         return habilitacao;
     }
 
-    public void setHabilitação(String habilitacao) {
+    public void setHabilitacao(String habilitacao) {
         this.habilitacao = habilitacao;
     }
 
@@ -31,7 +31,7 @@ public class Motorista extends Pessoa {
 
     public boolean validarMotorista(){
 
-        if(verificaCPF(super.getCpf()) && this.habilitacao.length() == 11){
+        if(verificaCPF(super.getCpf()) && getHabilitacao().length() == 11){
             this.validado = true;
             return true;
         }else {
