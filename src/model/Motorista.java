@@ -1,5 +1,7 @@
 package model;
 
+import static utils.VerificaCpf.verificaCPF;
+
 public class Motorista extends Pessoa {
     private String habilitacao;
     private boolean validado;
@@ -27,12 +29,15 @@ public class Motorista extends Pessoa {
     }
 
 
-    public void validarMotorista(String cpf,String habilitacao){
-        // pegar o util verifica cpf
+    public boolean validarMotorista(){
 
-        if()
-
-        this.validado = true;
+        if(verificaCPF(super.getCpf()) && this.habilitacao.length() == 11){
+            this.validado = true;
+            return true;
+        }else {
+            this.validado = false;
+            return false;
+        }
 
     }
 }
