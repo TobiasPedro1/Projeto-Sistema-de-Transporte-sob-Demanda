@@ -1,15 +1,24 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static utils.VerificaCpf.verificaCPF;
 
 public class Motorista extends Pessoa {
     private String habilitacao;
     private boolean validado;
+    private ContaBancaria conta;
+    private Veiculo veiculo;
 
-    public Motorista(String nome, String cpf, String habilitacao){
+    private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
+
+    public Motorista(String nome, String cpf, String habilitacao, ContaBancaria conta, Veiculo veiculo){
         super(nome, cpf);
         this.habilitacao = habilitacao;
         this.validado = false;
+        this.conta = conta;
+        this.veiculo = veiculo;
     }
 
     public String getHabilitacao() {
@@ -28,6 +37,13 @@ public class Motorista extends Pessoa {
         this.validado = validado;
     }
 
+    public ContaBancaria getConta(){
+        return conta;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
 
     public boolean validarMotorista(){
 
