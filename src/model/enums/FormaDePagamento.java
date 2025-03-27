@@ -4,5 +4,4 @@ public enum FormaDePagamento {
     pix,
     credito,
     dinheiro;
-
 }
