@@ -24,4 +24,11 @@ public class Avaliacao {
     public void setNota(int nota) {
         this.nota = nota;
     }
+
+    @Override
+    public String toString() {
+        return "Avaliações: " +
+                "nota: " + nota +
+                ", comentario: " + comentario;
+    }
 }
