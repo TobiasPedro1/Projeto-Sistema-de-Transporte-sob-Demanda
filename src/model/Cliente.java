@@ -2,7 +2,6 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
-import static utils.VerificaCpf.verificaCPF;
 
 public class Cliente extends Pessoa {
     private boolean validado;
@@ -37,14 +36,5 @@ public class Cliente extends Pessoa {
         this.avaliacao.add(avaliacao);
     }
 
-    public boolean validarCliente(){
-        if(verificaCPF(super.getCpf())){
-            this.validado = true;
-            return true;
-        }else{
-            this.validado = false;
-            return false;
-        }
-    }
 
 }
