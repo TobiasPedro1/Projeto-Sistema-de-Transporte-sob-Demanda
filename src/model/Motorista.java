@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import static utils.VerificaCpf.verificaCPF;
 
 public class Motorista extends Pessoa {
     private String habilitacao;
@@ -48,15 +47,5 @@ public class Motorista extends Pessoa {
         this.avaliacoes.add(avaliacao);
     }
 
-    public boolean validarMotorista(){
 
-        if(verificaCPF(super.getCpf()) && getHabilitacao().length() == 11){
-            this.validado = true;
-            return true;
-        }else {
-            this.validado = false;
-            return false;
-        }
-
-    }
 }
