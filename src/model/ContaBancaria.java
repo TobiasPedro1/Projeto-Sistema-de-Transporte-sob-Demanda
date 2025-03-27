@@ -4,6 +4,8 @@ public class ContaBancaria {
     private Integer numeroConta;
     private Double saldo;
 
+    //fazer um util para verificar se conta ja existe
+
     public ContaBancaria(Integer numeroConta){
         this.numeroConta = numeroConta;
         this.saldo = 0.0;
