@@ -10,7 +10,6 @@ public class Motorista extends Pessoa {
     private boolean validado;
     private ContaBancaria conta;
     private Veiculo veiculo;
-
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
     public Motorista(String nome, String cpf, String habilitacao, ContaBancaria conta, Veiculo veiculo){
@@ -43,6 +42,10 @@ public class Motorista extends Pessoa {
 
     public List<Avaliacao> getAvaliacoes() {
         return avaliacoes;
+    }
+
+    public void adicionarAvaliacao(Avaliacao avaliacao){
+        this.avaliacoes.add(avaliacao);
     }
 
     public boolean validarMotorista(){
