@@ -6,6 +6,7 @@ public class Pagamento {
             cliente.getConta().sacar(valor);
             motorista.getConta().depositar(valor);
             System.out.println("Pagamento efetuado com sucesso!");
+            //possivel implementacao de avaliacao
         } else {
             //lancar excecao
             System.out.println("Saldo insuficiente para efetuar o pagamento");
