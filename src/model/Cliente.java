@@ -33,7 +33,7 @@ public class Cliente extends Pessoa {
         return avaliacao;
     }
 
-    public void adiconarAvaliacoes(Avaliacao avaliacao){
+    public void adicionarAvaliacao(Avaliacao avaliacao){
         this.avaliacao.add(avaliacao);
     }
 
