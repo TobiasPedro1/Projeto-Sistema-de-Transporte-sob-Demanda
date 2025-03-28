@@ -3,12 +3,19 @@ package service;
 import model.Avaliacao;
 import model.Motorista;
 import static utils.VerificaCpf.verificaCPF;
+import repository.MotoristaRepository;
+
 import java.util.List;
 import java.util.Random;
 
 public class MotoristaService {
     //aleterar para repositorio assim que criado
-    private List<Motorista> motoristasList;
+    private MotoristaRepository motoristaRepository;
+
+    public MotoristaService (MotoristaRepository motoristaRepository){
+        this.motoristaRepository = motoristaRepository;
+    }
+
 
     public boolean validarMotorista(Motorista motorista){
 
@@ -28,10 +35,16 @@ public class MotoristaService {
 
     //aleterar para repositorio assim que criado
     public Motorista selecionarMotoristaAleatorio(){
-        Random random = new Random();
-        int index = random.nextInt(this.motoristasList.size());
+        List<Motorista> motoristas = this.motoristaRepository.findALL();
+        if(motoristas.isEmpty()){
+            // atualizar para exceção personalizada
+            throw new IllegalStateException("Nenhum motorista disponível");
+        }
 
-        return this.motoristasList.get(index);
+        Random random = new Random();
+        int index = random.nextInt(this.motoristaRepository.findALL().size());
+
+        return this.motoristaRepository.findALL().get(index);
 
     }
 
