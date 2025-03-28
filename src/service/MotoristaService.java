@@ -28,7 +28,7 @@ public class MotoristaService {
         }
     }
 
-    public void adicionarAvaliacao(Motorista motorista ,Avaliacao avaliacao){
+    public void adicionarAvaliacaoMotorista(Motorista motorista ,Avaliacao avaliacao){
         motorista.adicionarAvaliacao(avaliacao);
     }
 
