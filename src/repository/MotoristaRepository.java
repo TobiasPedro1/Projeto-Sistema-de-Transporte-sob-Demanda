@@ -4,7 +4,7 @@ import model.Motorista;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MotoristaRepository implements MotoritaRepositoryInterface{
+public class MotoristaRepository implements MotoristaRepositoryInterface{
     List<Motorista> motoristas = new ArrayList<>();
 
     @Override
