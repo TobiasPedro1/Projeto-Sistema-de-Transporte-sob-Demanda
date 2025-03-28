@@ -1,16 +1,15 @@
 package model;
 
+import model.enums.StatusViagem;
 import service.MotoristaService;
 
 public class ViagemPassageiro extends Viagem {
     private String passageiro;
-    private Motorista motorista;
 
-    public ViagemPassageiro(String origem, String destino, double valor, Veiculo veiculo, String passageiro, MotoristaService motoristaService) {
-        super(origem, destino, valor, veiculo);
+
+    public ViagemPassageiro(String origem, String destino, double valor, Veiculo veiculo, String passageiro, StatusViagem statusViagem, MotoristaService motoristaService) {
+        super(origem, destino, valor, veiculo, statusViagem,motoristaService);
         this.passageiro = passageiro;
-        //possivel alteração apos a criação do repositorio
-        this.motorista = motoristaService.selecionarMotoristaAleatorio();
     }
 
     public String getPassageiro() {
@@ -21,11 +20,5 @@ public class ViagemPassageiro extends Viagem {
         this.passageiro = passageiro;
     }
 
-    public Motorista getMotorista() {
-        return motorista;
-    }
 
-    public void setMotorista(Motorista motorista) {
-        this.motorista = motorista;
-    }
 }
