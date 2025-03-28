@@ -10,7 +10,6 @@ public class MotoristaService {
     //aleterar para repositorio assim que criado
     private List<Motorista> motoristasList;
 
-
     public boolean validarMotorista(Motorista motorista){
 
         if(verificaCPF(motorista.getCpf()) && motorista.getHabilitacao().length() == 11){
