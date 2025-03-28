@@ -24,11 +24,9 @@ public class Pagamento {
         return cliente;
     }
 
-
     public Motorista getMotorista() {
         return motorista;
     }
-
 
     public double getValor() {
         return valor;
