@@ -6,7 +6,6 @@ import service.MotoristaService;
 public class ViagemPassageiro extends Viagem {
     private String passageiro;
 
-
     public ViagemPassageiro(String origem, String destino, double valor, Veiculo veiculo, String passageiro, StatusViagem statusViagem, MotoristaService motoristaService) {
         super(origem, destino, valor, veiculo, statusViagem,motoristaService);
         this.passageiro = passageiro;
