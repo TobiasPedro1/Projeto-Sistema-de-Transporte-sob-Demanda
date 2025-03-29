@@ -4,7 +4,7 @@ import model.Viagem;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ViagemRepositorio implements ViagemRepositoryInterface {
+public class ViagemRepository implements ViagemRepositoryInterface {
     private List<Viagem> viagens = new ArrayList<>();
 
     @Override
