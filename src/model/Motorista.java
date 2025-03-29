@@ -7,6 +7,7 @@ import java.util.List;
 public class Motorista extends Pessoa {
     private String habilitacao;
     private boolean validado;
+    private boolean disponivel;
     private ContaBancaria conta;
     private Veiculo veiculo;
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
@@ -15,6 +16,7 @@ public class Motorista extends Pessoa {
         super(nome, cpf);
         this.habilitacao = habilitacao;
         this.validado = false;
+        this.disponivel = true;
         this.conta = conta;
         this.veiculo = veiculo;
     }
@@ -41,6 +43,18 @@ public class Motorista extends Pessoa {
 
     public List<Avaliacao> getAvaliacoes() {
         return avaliacoes;
+    }
+
+    public Veiculo getVeiculo() {
+        return veiculo;
+    }
+
+    public boolean isDisponivel() {
+        return disponivel;
+    }
+
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
     }
 
     public void adicionarAvaliacao(Avaliacao avaliacao){
