@@ -1,20 +1,19 @@
 package model;
 
-import model.enums.TipoVeiculo;
-
 public class Veiculo {
     private String placa;
     private String marca;
     private String modelo;
+    private int qtdDePassageiros;
     private int ano;
-    private TipoVeiculo tipoVeiculo;
 
-    public Veiculo(String placa, String marca, String modelo, int ano, TipoVeiculo tipoVeiculo) {
+
+    public Veiculo(String placa, String marca, String modelo, int qtdDePassageiros ,int ano) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
         this.ano = ano;
-        this.tipoVeiculo = tipoVeiculo;
+        this.qtdDePassageiros = qtdDePassageiros;
     }
 
     public String getPlaca() {
@@ -49,11 +48,11 @@ public class Veiculo {
         this.ano = ano;
     }
 
-    public TipoVeiculo getTipoVeiculo() {
-        return tipoVeiculo;
+    public int getQtdDePassageiros() {
+        return qtdDePassageiros;
     }
 
-    public void setTipoVeiculo(TipoVeiculo tipoVeiculo) {
-        this.tipoVeiculo = tipoVeiculo;
+    public void setQtdDePassageiros(int qtdDePassageiros) {
+        this.qtdDePassageiros = qtdDePassageiros;
     }
 }
