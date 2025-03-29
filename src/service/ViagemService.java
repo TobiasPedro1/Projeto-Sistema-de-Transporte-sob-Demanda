@@ -52,11 +52,19 @@ public class ViagemService {
         System.out.println("Viagem iniciada.");
     }
 
-    public void finalizarViagem() {
+    public void finalizarViagem(Viagem viagem) {
         System.out.println("Viagem finalizada.");
+        Motorista motorista = viagem.getMotorista();
+        motorista.setDisponivel(true);
+        motoristaRepository.save(motorista);
+        viagemRepository.save(viagem);
     }
 
-    public void cancelarViagem() {
+    public void cancelarViagem(Viagem viagem) {
         System.out.println("Viagem cancelada.");
+        Motorista motorista = viagem.getMotorista();
+        motorista.setDisponivel(true);
+        motoristaRepository.save(motorista);
+        viagemRepository.save(viagem);
     }
 }
