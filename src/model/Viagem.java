@@ -8,7 +8,6 @@ public class Viagem {
     private Veiculo veiculo;
     private Motorista motorista;
 
-
     public Viagem(String origem, String destino, double valor, Veiculo veiculo,Motorista motorista) {
         this.origem = origem;
         this.destino = destino;
