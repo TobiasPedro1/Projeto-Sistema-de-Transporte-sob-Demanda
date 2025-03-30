@@ -7,7 +7,6 @@ public class Veiculo {
     private int qtdDePassageiros;
     private int ano;
 
-
     public Veiculo(String placa, String marca, String modelo, int qtdDePassageiros ,int ano) {
         this.placa = placa;
         this.marca = marca;
