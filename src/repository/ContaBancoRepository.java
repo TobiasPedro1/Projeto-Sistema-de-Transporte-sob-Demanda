@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ContaBancoRepository implements ContaBancoRepositoryInterface {
-    private List<ContaBancaria> contasBancarias;
+    private List<ContaBancaria> contasBancarias ;
 
     public ContaBancoRepository() {
         this.contasBancarias = new ArrayList<>();
