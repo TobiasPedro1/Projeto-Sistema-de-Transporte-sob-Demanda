@@ -1,21 +1,21 @@
 package model;
 
 public class ContaBancaria {
-    private Integer numeroConta;
+    private String numeroConta;
     private Double saldo;
 
     //fazer um util para verificar se conta ja existe
 
-    public ContaBancaria(Integer numeroConta){
+    public ContaBancaria(String numeroConta){
         this.numeroConta = numeroConta;
         this.saldo = 0.0;
     }
 
-    public Integer getNumeroConta() {
+    public String getNumeroConta() {
         return numeroConta;
     }
 
-    public void setNumeroConta(Integer numeroConta) {
+    public void setNumeroConta(String numeroConta) {
         this.numeroConta = numeroConta;
     }
 
