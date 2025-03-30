@@ -74,6 +74,10 @@ public class ViagemService implements ViagemServiceInterface {
         motoristaRepository.save(motorista);
         viagemRepository.save(viagem);
         System.out.println("Viagem finalizada.");
+        System.out.println("=================================================" +
+                            "valor da viagem a ser pago: " + viagem.getValor() +
+                         "\n=================================================");
+
     }
 
     @Override
