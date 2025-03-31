@@ -8,9 +8,6 @@ import repository.MotoristaRepository;
 import repository.ClienteRepository;
 import service.MotoristaService;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class AvaliacaoService {
     private AvaliacaoRepository avaliacaoRepository;
     private MotoristaRepository motoristaRepository;
