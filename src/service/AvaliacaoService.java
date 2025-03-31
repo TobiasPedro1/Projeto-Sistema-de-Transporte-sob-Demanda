@@ -6,47 +6,41 @@ import model.Motorista;
 import repository.AvaliacaoRepository;
 import repository.MotoristaRepository;
 import repository.ClienteRepository;
-import service.MotoristaService;
 
 public class AvaliacaoService {
     private AvaliacaoRepository avaliacaoRepository;
     private MotoristaRepository motoristaRepository;
     private ClienteRepository clienteRepository;
+    private MotoristaService motoristaService;
+    private ClienteService clienteService;
 
-    public AvaliacaoService (AvaliacaoRepository avaliacaoRepository, MotoristaRepository motoristaRepository, ClienteRepository clienteRepository){
+    public AvaliacaoService(AvaliacaoRepository avaliacaoRepository, MotoristaRepository motoristaRepository, ClienteRepository clienteRepository, MotoristaService motoristaService, ClienteService clienteService) {
         this.avaliacaoRepository = avaliacaoRepository;
         this.motoristaRepository = motoristaRepository;
         this.clienteRepository = clienteRepository;
+        this.motoristaService = motoristaService;
+        this.clienteService = clienteService;
     }
 
-    public void avaliaMotorista(String nomeMotorista, String comentario, int nota) {
+    public void avaliarMotorista(String nomeMotorista, String comentario, int nota) {
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
         Motorista motorista = motoristaRepository.motoristaFindByName(nomeMotorista);
-        MotoristaService motoristaService = new MotoristaService(motoristaRepository);
-        if(motorista != null){
+        if (motorista != null) {
             motoristaService.adicionarAvaliacaoMotorista(motorista, avaliacao);
             avaliacaoRepository.save(avaliacao);
-        }else{
+        } else {
             System.out.println("Motorista não encontrado.");
         }
-
     }
-
 
     public void avaliarCliente(String nomeCliente, String comentario, int nota) {
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
-        ClienteService clienteService = new ClienteService(clienteRepository);
         Cliente cliente = clienteRepository.clienteFindByName(nomeCliente);
-        if(cliente !=null ) {
+        if (cliente != null) {
             clienteService.adicionarAvaliacao(cliente, avaliacao);
             avaliacaoRepository.save(avaliacao);
-        } else{
+        } else {
             System.out.println("Cliente não encontrado.");
         }
-
-
     }
-
-
-
 }
