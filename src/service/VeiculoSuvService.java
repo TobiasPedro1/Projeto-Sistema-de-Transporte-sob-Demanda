@@ -56,7 +56,7 @@ public class VeiculoSuvService {
             return null;
         }
 
-        VeiculoSuv veiculoEscolhido = veiculos.get(0); // Escolhe o primeiro veículo disponível
+        VeiculoSuv veiculoEscolhido = veiculos.get(0);
         Motorista motorista = veiculoEscolhido.getMotorista();
 
         if (motorista == null || !motorista.isDisponivel()) {
