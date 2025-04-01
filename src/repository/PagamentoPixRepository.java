@@ -16,9 +16,9 @@ public class PagamentoPixRepository implements PagamentoPixRepositoryInterface {
     }
 
     @Override
-    public PagamentoPix findByData(LocalDateTime dataHoraPagamento) {
+    public PagamentoPix findByChavePix(String chavePix) {
         for (PagamentoPix pagamento : pagamentoPixRepository) {
-            if (pagamento.getDataHoraPagamento().equals(dataHoraPagamento)) {
+            if (pagamento.getChavePix().equals(chavePix)) {
                 return pagamento;
             }
         }

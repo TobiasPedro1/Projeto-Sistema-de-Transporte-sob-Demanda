@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PagamentoPixRepositoryInterface {
     void save(PagamentoPix pagamento);
-    PagamentoPix findByData(LocalDateTime dataHoraPagamento);
+    PagamentoPix findByChavePix(String chavePix);
     List<PagamentoPix> findAll();
     void delete(PagamentoPix pagamento);
 }

@@ -3,26 +3,30 @@ package service;
 import model.Cliente;
 import model.Motorista;
 import model.Pagamento;
+import repository.PagamentoRepository;
 
 public class PagamentoService {
-    private ContaBancariaService contaBancariaService;
+    private final ContaBancariaService contaBancariaService;
+    private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoService(){
-        this.contaBancariaService = new ContaBancariaService();
+    public PagamentoService(ContaBancariaService contaBancariaService, PagamentoRepository pagamentoRepository) {
+        this.contaBancariaService = contaBancariaService;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
-    public Pagamento pagarCorrida(Cliente cliente, Motorista motorista, double valor){
+    public Pagamento pagarCorrida(Cliente cliente, Motorista motorista, double valor) {
         String numeroContaCliente = cliente.getConta().getNumeroConta();
         String numeroContaMotorista = motorista.getConta().getNumeroConta();
 
-        if(contaBancariaService.buscarContaPorNumero(numeroContaCliente).getSaldo() >= valor){
+        if (contaBancariaService.buscarContaPorNumero(numeroContaCliente).getSaldo() >= valor) {
             contaBancariaService.buscarContaPorNumero(numeroContaCliente).sacar(valor);
             contaBancariaService.buscarContaPorNumero(numeroContaMotorista).depositar(valor);
             System.out.println("Pagamento efetuado com sucesso!");
 
-            return new Pagamento(cliente, motorista, valor);
+            Pagamento pagamento = new Pagamento(cliente, motorista, valor);
+            pagamentoRepository.save(pagamento);
+            return pagamento;
         } else {
-            //lancar excecao especifica
             throw new RuntimeException("Saldo insuficiente para efetuar o pagamento");
         }
     }
