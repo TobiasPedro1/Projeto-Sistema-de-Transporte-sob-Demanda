@@ -1,5 +1,8 @@
 package service;
 
+import exceptions.AvaliacaoInvalida;
+import exceptions.EntidadeNaoEncontrada;
+import exceptions.SalvaFalhaException;
 import model.Avaliacao;
 import model.Cliente;
 import model.Motorista;
@@ -23,24 +26,39 @@ public class AvaliacaoService {
     }
 
     public void avaliarMotorista(String nomeMotorista, String comentario, int nota) {
+        if(nota < 0 || nota > 5) {
+            throw new AvaliacaoInvalida("Nota deve ser entre 0 e 5.");
+        }
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
         Motorista motorista = motoristaRepository.motoristaFindByName(nomeMotorista);
         if (motorista != null) {
             motoristaService.adicionarAvaliacaoMotorista(motorista, avaliacao);
-            avaliacaoRepository.save(avaliacao);
+            try {
+                avaliacaoRepository.save(avaliacao);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar avaliação.", e);
+            }
         } else {
-            System.out.println("Motorista não encontrado.");
+            throw new EntidadeNaoEncontrada("Motorista não encontrado.");
         }
     }
 
     public void avaliarCliente(String nomeCliente, String comentario, int nota) {
+        if(nota < 0 || nota > 5) {
+            throw new AvaliacaoInvalida("Nota deve ser entre 0 e 5.");
+        }
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
         Cliente cliente = clienteRepository.clienteFindByName(nomeCliente);
         if (cliente != null) {
             clienteService.adicionarAvaliacao(cliente, avaliacao);
             avaliacaoRepository.save(avaliacao);
+            try {
+                avaliacaoRepository.save(avaliacao);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar avaliação.", e);
+            }
         } else {
-            System.out.println("Cliente não encontrado.");
+            throw new EntidadeNaoEncontrada("Cliente não encontrado.");
         }
     }
 }
