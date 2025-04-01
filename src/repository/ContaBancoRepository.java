@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class ContaBancoRepository implements ContaBancoRepositoryInterface {
-    private List<ContaBancaria> contasBancarias ;
+    private List<ContaBancaria> contasBancarias;
 
     public ContaBancoRepository() {
         this.contasBancarias = new ArrayList<>();
@@ -39,4 +39,12 @@ public class ContaBancoRepository implements ContaBancoRepositoryInterface {
         }
     }
 
+    public ContaBancaria findByChavePix(String chavePix) {
+        for (ContaBancaria conta : contasBancarias) {
+            if (conta.getChavePix().equals(chavePix)) {
+                return conta;
+            }
+        }
+        return null;
+    }
 }
