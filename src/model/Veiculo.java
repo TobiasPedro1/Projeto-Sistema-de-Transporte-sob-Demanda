@@ -6,13 +6,14 @@ public class Veiculo {
     private String modelo;
     private int qtdDePassageiros;
     private int ano;
+    private Motorista motorista;
 
-    public Veiculo(String placa, String marca, String modelo, int qtdDePassageiros ,int ano) {
+    public Veiculo(String placa, String marca, String modelo, int qtdDePassageiros, int ano) {
         this.placa = placa;
         this.marca = marca;
         this.modelo = modelo;
-        this.ano = ano;
         this.qtdDePassageiros = qtdDePassageiros;
+        this.ano = ano;
     }
 
     public String getPlaca() {
@@ -53,5 +54,13 @@ public class Veiculo {
 
     public void setQtdDePassageiros(int qtdDePassageiros) {
         this.qtdDePassageiros = qtdDePassageiros;
+    }
+
+    public Motorista getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(Motorista motorista) {
+        this.motorista = motorista;
     }
 }

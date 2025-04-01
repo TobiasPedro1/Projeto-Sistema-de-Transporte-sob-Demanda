@@ -19,6 +19,10 @@ public class ContaBancariaService {
         return contaBancoRepository.findByNumero(numeroConta);
     }
 
+    public ContaBancaria buscarContaPorChavePix(String chavePix) {
+        return contaBancoRepository.findByChavePix(chavePix);
+    }
+
     public void depositar(String numeroConta, Double valor) {
         ContaBancaria contaBancaria = contaBancoRepository.findByNumero(numeroConta);
         if (contaBancaria != null) {
