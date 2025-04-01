@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.*;
 import model.ContaBancaria;
 import repository.ContaBancoRepository;
 
@@ -16,32 +17,53 @@ public class ContaBancariaService {
     }
 
     public ContaBancaria buscarContaPorNumero(String numeroConta) {
-        return contaBancoRepository.findByNumero(numeroConta);
+        ContaBancaria contaBancaria = contaBancoRepository.findByNumero(numeroConta);
+        if (contaBancaria == null) {
+            throw new ContaNaoEncontradaException("Conta não encontrada.");
+        }
+        return contaBancaria;
     }
 
     public ContaBancaria buscarContaPorChavePix(String chavePix) {
-        return contaBancoRepository.findByChavePix(chavePix);
+        ContaBancaria contaBancaria = contaBancoRepository.findByChavePix(chavePix);
+        if (contaBancaria == null) {
+            throw new ContaNaoEncontradaException("Conta não encontrada.");
+        }
+        return contaBancaria;
     }
 
     public void depositar(String numeroConta, Double valor) {
+        if(valor <= 0)  {
+            throw new OperacaoInvalidaExecption("Valor de depósito inválido.");
+        }
         ContaBancaria contaBancaria = contaBancoRepository.findByNumero(numeroConta);
         if (contaBancaria != null) {
             contaBancaria.depositar(valor);
         } else {
-            System.out.println("Conta não encontrada");
+            throw new ContaNaoEncontradaException("Conta não encontrada.");
         }
     }
 
     public void sacar(String numeroConta, Double valor) {
+        if(valor <= 0) {
+            throw new OperacaoInvalidaExecption("Valor de saque deve ser positivo.");
+        }
         ContaBancaria contaBancaria = contaBancoRepository.findByNumero(numeroConta);
         if (contaBancaria != null) {
+            if (contaBancaria.getSaldo() < valor) {
+                throw new SaldoInsuficienteException("Saldo insuficiente.");
+            }
             contaBancaria.sacar(valor);
         } else {
-            System.out.println("Conta não encontrada");
+            throw new ContaNaoEncontradaException("Conta não encontrada.");
         }
     }
 
     public void deletarConta(String numeroConta) {
+        ContaBancaria contaBancaria = contaBancoRepository.findByNumero(numeroConta);
+        if(contaBancaria == null) {
+            throw new ContaNaoEncontradaException("Conta não encontrada.");
+        }
         contaBancoRepository.deleteByNumero(numeroConta);
     }
 }
