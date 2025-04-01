@@ -1,5 +1,8 @@
 package service;
 
+import exceptions.MotoristaNaoDisponivelException;
+import exceptions.ClienteNaoValidadoException;
+import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.Viagem;
@@ -25,21 +28,22 @@ public class ViagemService implements ViagemServiceInterface {
         Motorista motorista = motoristaService.selecionarMotoristaAleatorio();
 
         if (motorista == null || !motorista.isDisponivel()) {
-            System.out.println("Nenhum motorista disponível no momento.");
-            return null;
+            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível no momento.");
         } else if (!cliente.isValidado()) {
-            System.out.println("Cliente não validado.");
-            return null;
+            throw new ClienteNaoValidadoException("Cliente não validado.");
         }
 
         Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
         motorista.setDisponivel(false);
 
-        clienteRepository.save(cliente);
-        motoristaRepository.save(motorista);
-        viagemRepository.save(viagem);
+        try {
+            clienteRepository.save(cliente);
+            motoristaRepository.save(motorista);
+            viagemRepository.save(viagem);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+        }
 
-        System.out.println("Viagem chamada por: " + cliente.getNome() + ", de origem: " + origem + " com destino: " + destino + " com motorista: " + motorista.getNome());
         return viagem;
     }
 
@@ -48,17 +52,19 @@ public class ViagemService implements ViagemServiceInterface {
         Motorista motorista = motoristaService.selecionarMotoristaAleatorio();
 
         if (motorista == null || !motorista.isDisponivel()) {
-            System.out.println("Nenhum motorista disponível no momento.");
-            return null;
+            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível no momento.");
         }
 
         Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
         motorista.setDisponivel(false);
 
-        motoristaRepository.save(motorista);
-        viagemRepository.save(viagem);
+        try {
+            motoristaRepository.save(motorista);
+            viagemRepository.save(viagem);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+        }
 
-        System.out.println("Viagem de entrega chamada de origem: " + origem + " com destino: " + destino + " com motorista: " + motorista.getNome() + " do pacote: " + encomenda);
         return viagem;
     }
 
@@ -71,21 +77,32 @@ public class ViagemService implements ViagemServiceInterface {
     public void finalizarViagem(Viagem viagem) {
         Motorista motorista = viagem.getMotorista();
         motorista.setDisponivel(true);
-        motoristaRepository.save(motorista);
-        viagemRepository.save(viagem);
+
+        try {
+            motoristaRepository.save(motorista);
+            viagemRepository.save(viagem);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+        }
+
         System.out.println("Viagem finalizada.");
         System.out.println("=================================================" +
-                            "valor da viagem a ser pago: " + viagem.getValor() +
-                         "\n=================================================");
-
+                "valor da viagem a ser pago: " + viagem.getValor() +
+                "\n=================================================");
     }
 
     @Override
     public void cancelarViagem(Viagem viagem) {
         Motorista motorista = viagem.getMotorista();
         motorista.setDisponivel(true);
-        motoristaRepository.save(motorista);
-        viagemRepository.save(viagem);
+
+        try {
+            motoristaRepository.save(motorista);
+            viagemRepository.save(viagem);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+        }
+
         System.out.println("Viagem cancelada.");
     }
 }

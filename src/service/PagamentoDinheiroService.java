@@ -1,6 +1,8 @@
 
 package service;
 
+import exceptions.SaldoInsuficienteException;
+import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.PagamentoDinheiro;
@@ -29,26 +31,46 @@ public class PagamentoDinheiroService {
             System.out.println("Pagamento em dinheiro efetuado com sucesso!");
 
             PagamentoDinheiro pagamento = new PagamentoDinheiro(cliente, motorista, valor, dinheiro);
-            pagamentoDinheiroRepository.save(pagamento);
+            try {
+                pagamentoDinheiroRepository.save(pagamento);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar pagamento.", e);
+            }
             return pagamento;
         } else {
-            throw new RuntimeException("Dinheiro insuficiente para efetuar o pagamento");
+            throw new SaldoInsuficienteException("Dinheiro insuficiente para efetuar o pagamento");
         }
     }
 
     public void save(PagamentoDinheiro pagamento) {
-        pagamentoDinheiroRepository.save(pagamento);
+        try {
+            pagamentoDinheiroRepository.save(pagamento);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar pagamento.", e);
+        }
     }
 
     public PagamentoDinheiro findByData(LocalDateTime dataHoraPagamento) {
-        return pagamentoDinheiroRepository.findByData(dataHoraPagamento);
+        try {
+            return pagamentoDinheiroRepository.findByData(dataHoraPagamento);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar pagamento.", e);
+        }
     }
 
     public List<PagamentoDinheiro> findAll() {
-        return pagamentoDinheiroRepository.findAll();
+        try {
+            return pagamentoDinheiroRepository.findAll();
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar pagamentos.", e);
+        }
     }
 
     public void delete(PagamentoDinheiro pagamento) {
-        pagamentoDinheiroRepository.delete(pagamento);
+        try {
+            pagamentoDinheiroRepository.delete(pagamento);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar pagamento.", e);
+        }
     }
 }

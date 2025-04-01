@@ -1,5 +1,8 @@
 package service;
 
+import exceptions.VeiculoNaoDisponivelException;
+import exceptions.MotoristaNaoDisponivelException;
+import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.VeiculoEconomico;
@@ -8,7 +11,6 @@ import repository.VeiculoEconomicoRepository;
 import repository.ViagemRepository;
 
 import java.util.List;
-import java.util.Random;
 
 public class VeiculoEconomicoService {
 
@@ -23,39 +25,57 @@ public class VeiculoEconomicoService {
     }
 
     public void save(VeiculoEconomico veiculo) {
-        veiculoEconomicoRepository.save(veiculo);
+        try {
+            veiculoEconomicoRepository.save(veiculo);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar veículo econômico.", e);
+        }
     }
 
     public VeiculoEconomico findByPlaca(String placa) {
-        return veiculoEconomicoRepository.findByPlaca(placa);
+        try {
+            return veiculoEconomicoRepository.findByPlaca(placa);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar veículo econômico.", e);
+        }
     }
 
     public List<VeiculoEconomico> findAll() {
-        return veiculoEconomicoRepository.findAll();
+        try {
+            return veiculoEconomicoRepository.findAll();
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar veículos econômicos.", e);
+        }
     }
 
     public void delete(VeiculoEconomico veiculo) {
-        veiculoEconomicoRepository.delete(veiculo);
+        try {
+            veiculoEconomicoRepository.delete(veiculo);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar veículo econômico.", e);
+        }
     }
 
     public Viagem chamarViagemComVeiculoEconomico(String origem, String destino, double valor, Cliente cliente) {
         List<VeiculoEconomico> veiculos = veiculoEconomicoRepository.findAll();
         if (veiculos.isEmpty()) {
-            System.out.println("Nenhum veículo econômico disponível.");
-            return null;
+            throw new VeiculoNaoDisponivelException("Nenhum veículo econômico disponível.");
         }
 
-        VeiculoEconomico veiculoEscolhido = veiculos.get(0); // Escolhe o primeiro veículo disponível
+        VeiculoEconomico veiculoEscolhido = veiculos.get(0);
         Motorista motorista = veiculoEscolhido.getMotorista();
 
         if (motorista == null || !motorista.isDisponivel()) {
-            System.out.println("Nenhum motorista disponível para o veículo econômico.");
-            return null;
+            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível para o veículo econômico.");
         }
 
         Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente);
         if (viagem != null) {
-            viagemRepository.save(viagem);
+            try {
+                viagemRepository.save(viagem);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar viagem.", e);
+            }
         }
         return viagem;
     }
@@ -63,21 +83,23 @@ public class VeiculoEconomicoService {
     public Viagem viagemEntrega(String origem, String destino, double valor, Cliente cliente, String pacote) {
         List<VeiculoEconomico> veiculos = veiculoEconomicoRepository.findAll();
         if (veiculos.isEmpty()) {
-            System.out.println("Nenhum veículo econômico disponível.");
-            return null;
+            throw new VeiculoNaoDisponivelException("Nenhum veículo econômico disponível.");
         }
 
-        VeiculoEconomico veiculoEscolhido = veiculos.get(0); // Escolhe o primeiro veículo disponível
+        VeiculoEconomico veiculoEscolhido = veiculos.get(0);
         Motorista motorista = veiculoEscolhido.getMotorista();
 
         if (motorista == null || !motorista.isDisponivel()) {
-            System.out.println("Nenhum motorista disponível para o veículo econômico.");
-            return null;
+            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível para o veículo econômico.");
         }
 
         Viagem viagem = viagemService.chamarViagemEntrega(origem, destino, valor, pacote);
         if (viagem != null) {
-            viagemRepository.save(viagem);
+            try {
+                viagemRepository.save(viagem);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar viagem.", e);
+            }
         }
         return viagem;
     }

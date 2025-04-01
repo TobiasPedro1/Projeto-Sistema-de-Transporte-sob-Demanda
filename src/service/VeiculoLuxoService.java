@@ -1,5 +1,8 @@
 package service;
 
+import exceptions.VeiculoNaoDisponivelException;
+import exceptions.MotoristaNaoDisponivelException;
+import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.VeiculoLuxo;
@@ -22,39 +25,57 @@ public class VeiculoLuxoService {
     }
 
     public void save(VeiculoLuxo veiculo) {
-        veiculoLuxoRepository.save(veiculo);
+        try {
+            veiculoLuxoRepository.save(veiculo);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar veículo de luxo.", e);
+        }
     }
 
     public VeiculoLuxo findByPlaca(String placa) {
-        return veiculoLuxoRepository.findByPlaca(placa);
+        try {
+            return veiculoLuxoRepository.findByPlaca(placa);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar veículo de luxo.", e);
+        }
     }
 
     public List<VeiculoLuxo> findAll() {
-        return veiculoLuxoRepository.findAll();
+        try {
+            return veiculoLuxoRepository.findAll();
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar veículos de luxo.", e);
+        }
     }
 
     public void delete(VeiculoLuxo veiculo) {
-        veiculoLuxoRepository.delete(veiculo);
+        try {
+            veiculoLuxoRepository.delete(veiculo);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar veículo de luxo.", e);
+        }
     }
 
     public Viagem chamarViagemComVeiculoLuxo(String origem, String destino, double valor, Cliente cliente) {
         List<VeiculoLuxo> veiculos = veiculoLuxoRepository.findAll();
         if (veiculos.isEmpty()) {
-            System.out.println("Nenhum veículo de luxo disponível.");
-            return null;
+            throw new VeiculoNaoDisponivelException("Nenhum veículo de luxo disponível.");
         }
 
         VeiculoLuxo veiculoEscolhido = veiculos.get(0);
         Motorista motorista = veiculoEscolhido.getMotorista();
 
         if (motorista == null || !motorista.isDisponivel()) {
-            System.out.println("Nenhum motorista disponível para o veículo de luxo.");
-            return null;
+            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível para o veículo de luxo.");
         }
 
         Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente);
         if (viagem != null) {
-            viagemRepository.save(viagem);
+            try {
+                viagemRepository.save(viagem);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar viagem.", e);
+            }
         }
         return viagem;
     }

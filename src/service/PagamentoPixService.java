@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.PagamentoPix;
@@ -28,7 +29,11 @@ public class PagamentoPixService {
             System.out.println("Pagamento efetuado com sucesso!");
 
             PagamentoPix pagamento = new PagamentoPix(cliente, motorista, valor, chavePixCliente);
-            pagamentoPixRepository.save(pagamento);
+            try {
+                pagamentoPixRepository.save(pagamento);
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar pagamento.", e);
+            }
             return pagamento;
         } else {
             throw new RuntimeException("Saldo insuficiente para efetuar o pagamento");
@@ -36,18 +41,34 @@ public class PagamentoPixService {
     }
 
     public void save(PagamentoPix pagamento) {
-        pagamentoPixRepository.save(pagamento);
+        try {
+            pagamentoPixRepository.save(pagamento);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao salvar pagamento.", e);
+        }
     }
 
     public PagamentoPix findByChavePix(String chavePix) {
-        return pagamentoPixRepository.findByChavePix(chavePix);
+        try {
+            return pagamentoPixRepository.findByChavePix(chavePix);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar Conta.", e);
+        }
     }
 
     public List<PagamentoPix> findAll() {
-        return pagamentoPixRepository.findAll();
+        try {
+            return pagamentoPixRepository.findAll();
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar pagamentos.", e);
+        }
     }
 
     public void delete(PagamentoPix pagamento) {
-        pagamentoPixRepository.delete(pagamento);
+        try {
+            pagamentoPixRepository.delete(pagamento);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar pagamento.", e);
+        }
     }
 }

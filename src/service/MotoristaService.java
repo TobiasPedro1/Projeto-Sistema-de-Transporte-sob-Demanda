@@ -1,5 +1,7 @@
 package service;
 
+import exceptions.MotoristaInvalidoException;
+import exceptions.MotoristaNaoEncontradoException;
 import model.Avaliacao;
 import model.Motorista;
 import static utils.VerificaCpf.verificaCPF;
@@ -24,7 +26,7 @@ public class MotoristaService {
             return true;
         }else {
             motorista.setValidado(false);
-            return false;
+            throw new MotoristaInvalidoException("Motorista inválido: CPF ou habilitação inválidos incorretos");
         }
     }
 
@@ -32,13 +34,11 @@ public class MotoristaService {
         motorista.adicionarAvaliacao(avaliacao);
     }
 
-
     //aleterar para repositorio assim que criado
     public Motorista selecionarMotoristaAleatorio(){
         List<Motorista> motoristas = this.motoristaRepository.findALL();
         if(motoristas.isEmpty()){
-            // atualizar para exceção personalizada
-            throw new IllegalStateException("Nenhum motorista disponível");
+            throw new MotoristaNaoEncontradoException("Nenhum motorista disponível");
         }
 
         Random random = new Random();
