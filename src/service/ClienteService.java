@@ -17,10 +17,14 @@ public class ClienteService {
 
     public boolean validarCliente(Cliente cliente) {
         if (verificaCPF(cliente.getCpf())) {
-            clienteRepository.save(cliente);
-            cliente.setValidado(true);
-            System.out.println("Cliente validado com sucesso.");
-            return true;
+            try {
+                cliente.setValidado(true);
+                System.out.println("Cliente validado com sucesso.");
+                clienteRepository.save(cliente);
+                return true;
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao salvar avaliação.", e);
+            }
         } else {
             cliente.setValidado(false);
             System.out.println("Falha na validação do cliente.");
@@ -35,12 +39,4 @@ public class ClienteService {
         cliente.adicionarAvaliacao(avaliacao);
     }
 
-    public void salvarCliente(Cliente cliente) {
-        try {
-            clienteRepository.save(cliente);
-            System.out.println("Cliente salvo com sucesso.");
-        } catch (Exception e) {
-            throw new SalvaFalhaException("Erro ao salvar cliente.", e);
-        }
-    }
 }
