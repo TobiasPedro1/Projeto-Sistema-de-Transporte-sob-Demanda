@@ -23,7 +23,7 @@ public class ClienteService {
                 clienteRepository.save(cliente);
                 return true;
             } catch (Exception e) {
-                throw new SalvaFalhaException("Erro ao salvar avaliação.", e);
+                throw new SalvaFalhaException("Erro ao salvar cliente.", e);
             }
         } else {
             cliente.setValidado(false);
