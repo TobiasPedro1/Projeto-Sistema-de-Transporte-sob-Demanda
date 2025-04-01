@@ -3,10 +3,10 @@ package model;
 public class ContaBancaria {
     private String numeroConta;
     private Double saldo;
+    private PagamentoPix pagamentoPix;
+    private PagamentoCredito pagamentoCredito;
 
-    //fazer um util para verificar se conta ja existe
-
-    public ContaBancaria(String numeroConta){
+    public ContaBancaria(String numeroConta) {
         this.numeroConta = numeroConta;
         this.saldo = 0.0;
     }
@@ -27,11 +27,26 @@ public class ContaBancaria {
         this.saldo = saldo;
     }
 
+    public PagamentoPix getPagamentoPix() {
+        return pagamentoPix;
+    }
+
+    public void setPagamentoPix(PagamentoPix pagamentoPix) {
+        this.pagamentoPix = pagamentoPix;
+    }
+
+    public PagamentoCredito getPagamentoCredito() {
+        return pagamentoCredito;
+    }
+
+    public void setPagamentoCredito(PagamentoCredito pagamentoCredito) {
+        this.pagamentoCredito = pagamentoCredito;
+    }
+
     public void depositar(Double valor) {
         if (valor > 0) {
             this.saldo += valor;
         } else {
-            //lancar excecao
             System.out.println("Valor de depósito inválido");
         }
     }
@@ -40,10 +55,7 @@ public class ContaBancaria {
         if (valor > 0 && this.saldo >= valor) {
             this.saldo -= valor;
         } else {
-            //lancar excecao
             System.out.println("Valor de saque inválido ou saldo insuficiente");
         }
     }
-
-
 }
