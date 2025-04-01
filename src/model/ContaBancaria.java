@@ -27,19 +27,19 @@ public class ContaBancaria {
         this.saldo = saldo;
     }
 
-    public PagamentoPix getPagamentoPix() {
+    public PagamentoPix getChavePix() {
         return pagamentoPix;
     }
 
-    public void setPagamentoPix(PagamentoPix pagamentoPix) {
+    public void setChavePix(PagamentoPix pagamentoPix) {
         this.pagamentoPix = pagamentoPix;
     }
 
-    public PagamentoCredito getPagamentoCredito() {
+    public PagamentoCredito getCartaoCredito() {
         return pagamentoCredito;
     }
 
-    public void setPagamentoCredito(PagamentoCredito pagamentoCredito) {
+    public void setCartaoCredito(PagamentoCredito pagamentoCredito) {
         this.pagamentoCredito = pagamentoCredito;
     }
 
