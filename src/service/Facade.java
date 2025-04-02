@@ -206,7 +206,7 @@ public class Facade {
         return viagemService.listarViagens();
     }
 
-    public void deletarViagem(Viagem viagem) {
-        viagemService.deletarViagem(viagem);
+    public void deletarViagem(String destino) {
+        viagemService.deleteByDestino(destino);
     }
 }

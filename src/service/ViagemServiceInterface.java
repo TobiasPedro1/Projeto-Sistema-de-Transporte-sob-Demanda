@@ -13,6 +13,6 @@ public interface ViagemServiceInterface {
     Viagem buscarViagemPorDestino(String destino);
     void iniciarViagem();
     List<Viagem> listarViagens();
-    void deletarViagem(Viagem viagem);
+    void deleteByDestino(String destino);
     Viagem finalizarViagem(Viagem viagem);
 }

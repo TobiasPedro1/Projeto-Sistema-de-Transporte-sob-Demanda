@@ -127,9 +127,9 @@ public class ViagemService implements ViagemServiceInterface {
     }
 
     @Override
-    public void deletarViagem(Viagem viagem) {
+    public void deleteByDestino(String destino) {
         try {
-            viagemRepository.delete(viagem);
+            viagemRepository.deleteByDestino(destino);
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao deletar viagem.", e);
         }
