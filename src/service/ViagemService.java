@@ -74,21 +74,29 @@ public class ViagemService implements ViagemServiceInterface {
     }
 
     @Override
-    public void finalizarViagem(Viagem viagem) {
+    public Viagem finalizarViagem(Viagem viagem) {
         Motorista motorista = viagem.getMotorista();
         motorista.setDisponivel(true);
 
         try {
             motoristaRepository.save(motorista);
             viagemRepository.save(viagem);
+            System.out.println("Viagem finalizada.");
+            System.out.println("=================================================" +
+                    "valor da viagem a ser pago: " + viagem.getValor() +
+                    "\n=================================================");
+            return viagem;
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
         }
-
-        System.out.println("Viagem finalizada.");
-        System.out.println("=================================================" +
-                "valor da viagem a ser pago: " + viagem.getValor() +
-                "\n=================================================");
+    }
+    @Override
+    public Viagem buscarViagemPorDestino(String destino) {
+        try {
+            return viagemRepository.findByDestino(destino);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao buscar viagem pelo destino: " + destino, e);
+        }
     }
 
     @Override
