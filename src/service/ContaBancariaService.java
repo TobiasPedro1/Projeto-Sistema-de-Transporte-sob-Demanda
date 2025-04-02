@@ -5,10 +5,10 @@ import model.ContaBancaria;
 import repository.ContaBancoRepository;
 
 public class ContaBancariaService {
-    private ContaBancoRepository contaBancoRepository;
+    private final ContaBancoRepository contaBancoRepository;
 
-    public ContaBancariaService() {
-        this.contaBancoRepository = new ContaBancoRepository();
+    public ContaBancariaService(ContaBancoRepository contaBancoRepository) {
+        this.contaBancoRepository = contaBancoRepository;
     }
 
     public void criarConta(String numeroConta) {
