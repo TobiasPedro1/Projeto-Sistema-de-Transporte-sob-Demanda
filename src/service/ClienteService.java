@@ -4,7 +4,7 @@ import static utils.VerificaCpf.verificaCPF;
 import model.Cliente;
 import model.Avaliacao;
 import repository.ClienteRepository;
-import exceptions.CpfClienteFalhaException;
+import exceptions.CpfFalhaException;
 import exceptions.EntidadeNaoEncontrada;
 import exceptions.SalvaFalhaException;
 
@@ -37,7 +37,7 @@ public class ClienteService {
         } else {
             cliente.setValidado(false);
             System.out.println("Falha na validação do cliente.");
-            throw new CpfClienteFalhaException("CPF do cliente é inválido.");
+            throw new CpfFalhaException("CPF do cliente é inválido.");
         }
     }
 
