@@ -10,6 +10,8 @@ import repository.ClienteRepository;
 import repository.MotoristaRepository;
 import repository.ViagemRepository;
 
+import java.util.List;
+
 public class ViagemService implements ViagemServiceInterface {
     private ClienteRepository clienteRepository;
     private MotoristaRepository motoristaRepository;
@@ -24,8 +26,9 @@ public class ViagemService implements ViagemServiceInterface {
     }
 
     @Override
-    public Viagem chamarViagem(String origem, String destino, double valor, Cliente cliente) {
+    public Viagem chamarViagem(String origem, String destino, double valor, String nomeCliente) {
         Motorista motorista = motoristaService.selecionarMotoristaAleatorio();
+        Cliente cliente = clienteRepository.clienteFindByNome(nomeCliente);
 
         if (motorista == null || !motorista.isDisponivel()) {
             throw new MotoristaNaoDisponivelException("Nenhum motorista disponível no momento.");
@@ -112,5 +115,23 @@ public class ViagemService implements ViagemServiceInterface {
         }
 
         System.out.println("Viagem cancelada.");
+    }
+
+    @Override
+    public List<Viagem> listarViagens() {
+        try {
+            return viagemRepository.findAll();
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao listar viagens.", e);
+        }
+    }
+
+    @Override
+    public void deletarViagem(Viagem viagem) {
+        try {
+            viagemRepository.delete(viagem);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar viagem.", e);
+        }
     }
 }

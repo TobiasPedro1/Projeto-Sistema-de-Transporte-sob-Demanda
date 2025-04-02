@@ -69,7 +69,7 @@ public class VeiculoEconomicoService {
             throw new MotoristaNaoDisponivelException("Nenhum motorista disponível para o veículo econômico.");
         }
 
-        Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente);
+        Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente.getNome());
         if (viagem != null) {
             try {
                 viagemRepository.save(viagem);
