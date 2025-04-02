@@ -43,12 +43,12 @@ public class AvaliacaoService {
         }
     }
 
-    public void avaliarCliente(String nomeCliente, String comentario, int nota) {
+    public void avaliarCliente(String nome, String comentario, int nota) {
         if(nota < 0 || nota > 5) {
             throw new AvaliacaoInvalida("Nota deve ser entre 0 e 5.");
         }
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
-        Cliente cliente = clienteRepository.clienteFindByName(nomeCliente);
+        Cliente cliente = clienteRepository.clienteFindByNome(nome);
         if (cliente != null) {
             clienteService.adicionarAvaliacao(cliente, avaliacao);
             avaliacaoRepository.save(avaliacao);
