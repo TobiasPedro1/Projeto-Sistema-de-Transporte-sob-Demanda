@@ -12,13 +12,13 @@ public class Motorista extends Pessoa {
     private Veiculo veiculo;
     private List<Avaliacao> avaliacoes = new ArrayList<Avaliacao>();
 
-    public Motorista(String nome, String cpf, String habilitacao, ContaBancaria conta, Veiculo veiculo){
+    public Motorista(String nome, String cpf, String habilitacao, ContaBancaria conta){
         super(nome, cpf);
         this.habilitacao = habilitacao;
         this.validado = false;
         this.disponivel = true;
         this.conta = conta;
-        this.veiculo = veiculo;
+        this.veiculo = null;
     }
 
     public String getHabilitacao() {
@@ -49,6 +49,10 @@ public class Motorista extends Pessoa {
         return veiculo;
     }
 
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
     public boolean isDisponivel() {
         return disponivel;
     }
@@ -60,6 +64,4 @@ public class Motorista extends Pessoa {
     public void adicionarAvaliacao(Avaliacao avaliacao){
         this.avaliacoes.add(avaliacao);
     }
-
-
 }
