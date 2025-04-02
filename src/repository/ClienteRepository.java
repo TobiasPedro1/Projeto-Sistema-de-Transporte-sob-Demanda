@@ -16,7 +16,7 @@ public class ClienteRepository implements ClienteRepositoryInterface {
     @Override
     public Cliente clienteFindByCpf(String cpf){
         for(Cliente cliente : clientes){
-            if(cliente.getNome().equals(cpf)){
+            if(cliente.getCpf().equals(cpf)){
                 System.out.println("Cliente encontrado!");
                 return cliente;
             }

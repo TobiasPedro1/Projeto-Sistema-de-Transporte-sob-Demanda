@@ -26,6 +26,19 @@ public class MotoristaRepository implements MotoristaRepositoryInterface{
     }
 
     @Override
+    public Motorista motoristaFindByCpf(String cpf){
+        for(Motorista motorista : motoristas){
+            if(motorista.getCpf().equals(cpf)){
+                System.out.println("Motorista encontrado!");
+                return motorista;
+            }
+        }
+        //fazer lancamento de erro
+        System.out.println("Motorista não encontrado!");
+        return null;
+    }
+
+    @Override
     public void save(Motorista motorista) {
         motoristas.add(motorista);
     }
