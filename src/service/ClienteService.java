@@ -15,6 +15,15 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
+    public void adicionarCliente(Cliente cliente) {
+        try {
+            clienteRepository.save(cliente);
+            System.out.println("Cliente adicionado com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao adicionar cliente.", e);
+        }
+    }
+
     public boolean validarCliente(Cliente cliente) {
         if (verificaCPF(cliente.getCpf())) {
             try {
