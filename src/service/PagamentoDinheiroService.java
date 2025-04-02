@@ -25,7 +25,7 @@ public class PagamentoDinheiroService {
         var contaCliente = cliente.getConta();
         var contaMotorista = motorista.getConta();
 
-        if (contaCliente.getSaldo() >= valor) {
+        if (dinheiro >= valor) {
             contaCliente.sacar(valor);
             contaMotorista.depositar(valor);
             System.out.println("Pagamento em dinheiro efetuado com sucesso!");
