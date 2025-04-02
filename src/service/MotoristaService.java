@@ -2,7 +2,9 @@ package service;
 
 import exceptions.MotoristaInvalidoException;
 import exceptions.MotoristaNaoEncontradoException;
+import exceptions.SalvaFalhaException;
 import model.Avaliacao;
+import model.Cliente;
 import model.Motorista;
 import static utils.VerificaCpf.verificaCPF;
 import repository.MotoristaRepository;
@@ -18,6 +20,14 @@ public class MotoristaService {
         this.motoristaRepository = motoristaRepository;
     }
 
+    public void cadastrarMotorista(Motorista motorista) {
+        try {
+            motoristaRepository.save(motorista);
+            System.out.println("Motorista adicionado com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao adicionar Motorista.", e);
+        }
+    }
 
     public boolean validarMotorista(Motorista motorista){
 
