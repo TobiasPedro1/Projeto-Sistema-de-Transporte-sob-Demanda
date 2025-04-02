@@ -81,7 +81,7 @@ public class VeiculoSuvService {
             throw new MotoristaNaoDisponivelException("Nenhum motorista disponível para o veículo SUV.");
         }
 
-        Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente);
+        Viagem viagem = viagemService.chamarViagem(origem, destino, valor, cliente.getNome());
         if (viagem != null) {
             try {
                 viagemRepository.save(viagem);
