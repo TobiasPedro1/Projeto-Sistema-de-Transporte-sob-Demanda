@@ -15,7 +15,7 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public void adicionarCliente(Cliente cliente) {
+    public void cadastrarCliente(Cliente cliente) {
         try {
             clienteRepository.save(cliente);
             System.out.println("Cliente adicionado com sucesso.");

@@ -5,7 +5,8 @@ import java.util.List;
 
 public interface ClienteRepositoryInterface {
     List<Cliente> findALL();
-    Cliente clienteFindByName(String nome);
+    Cliente clienteFindByCpf(String cpf);
+    Cliente clienteFindByNome(String nome);
     void save(Cliente cliente);
     void clienteDeleteByName(String nome);
 }
