@@ -141,11 +141,13 @@ public class Facade {
         veiculoLuxoService.save(veiculoLuxo);
     }*/
 
-    public Pagamento pagarCorrida(Cliente cliente, Motorista motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+    public Pagamento pagarCorrida(String cliente, String motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        Cliente clienteobj = clienteService.buscarClientePorNome(cliente);
+        Motorista motoristaobj = motoristaService.buscarMotoristaPorNome(motorista);
         return switch (metodoPagamento.toLowerCase()) {
-            case "pix" -> pagamentoPixService.pagarCorrida(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-            case "cartao" -> pagamentoCreditoService.pagar(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-            case "dinheiro" -> pagamentoDinheiroService.pagar(cliente, motorista, valor);
+            case "pix" -> pagamentoPixService.pagarCorrida(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+            case "cartao" -> pagamentoCreditoService.pagar(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+            case "dinheiro" -> pagamentoDinheiroService.pagar(clienteobj, motoristaobj, valor);
             default -> throw new IllegalArgumentException("Método de pagamento inválido.");
         };
     }
@@ -214,7 +216,7 @@ public class Facade {
         pagamentoService.delete(pagamento);
     }
 
-    public Viagem iniciarViagem(String origem, String destino, double valor, String nomeCliente) {
+    public Viagem chamarViagem(String origem, String destino, double valor, String nomeCliente) {
         return viagemService.chamarViagem(origem, destino, valor, nomeCliente);
     }
 
