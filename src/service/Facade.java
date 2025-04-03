@@ -209,4 +209,12 @@ public class Facade {
     public void deletarViagem(String destino) {
         viagemService.deleteByDestino(destino);
     }
+
+    public void avaliarMotorista(String nomeMotorista, String comentario, int nota) {
+        avaliacaoService.avaliarMotorista(nomeMotorista, comentario, nota);
+    }
+
+    public void avaliarCliente(String nomeCliente, String comentario, int nota) {
+        avaliacaoService.avaliarCliente(nomeCliente, comentario, nota);
+    }
 }
