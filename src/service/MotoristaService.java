@@ -67,4 +67,11 @@ public class MotoristaService {
         }
     }
 
+    public Motorista buscarMotoristaPorNome(String nome) {
+        try {
+            return motoristaRepository.motoristaFindByNome(nome);
+        } catch (Exception e) {
+            throw new CpfFalhaException("Motorista não encontrado com o nome: " + nome);
+        }
+    }
 }

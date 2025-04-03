@@ -14,7 +14,7 @@ public class MotoristaRepository implements MotoristaRepositoryInterface{
     }
 
     @Override
-    public Motorista motoristaFindByName(String nome) {
+    public Motorista motoristaFindByNome(String nome) {
         for (Motorista motorista : motoristas) {
             if (motorista.getNome().equals(nome)) {
                 System.out.println("Motorista encontrado!");

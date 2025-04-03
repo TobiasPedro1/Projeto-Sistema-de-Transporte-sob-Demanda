@@ -30,7 +30,7 @@ public class AvaliacaoService {
             throw new AvaliacaoInvalida("Nota deve ser entre 0 e 5.");
         }
         Avaliacao avaliacao = new Avaliacao(comentario, nota);
-        Motorista motorista = motoristaRepository.motoristaFindByName(nomeMotorista);
+        Motorista motorista = motoristaRepository.motoristaFindByNome(nomeMotorista);
         if (motorista != null) {
             motoristaService.adicionarAvaliacaoMotorista(motorista, avaliacao);
             try {
