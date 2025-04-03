@@ -21,16 +21,16 @@ public class PagamentoDinheiroService {
         this.pagamentoDinheiroRepository = pagamentoDinheiroRepository;
     }
 
-    public PagamentoDinheiro pagar(Cliente cliente, Motorista motorista, double valor, double dinheiro) {
+    public PagamentoDinheiro pagar(Cliente cliente, Motorista motorista, double valor) {
         var contaCliente = cliente.getConta();
         var contaMotorista = motorista.getConta();
 
-        if (dinheiro >= valor) {
+        if (contaCliente.getSaldo() >= valor) {
             contaCliente.sacar(valor);
             contaMotorista.depositar(valor);
             System.out.println("Pagamento em dinheiro efetuado com sucesso!");
 
-            PagamentoDinheiro pagamento = new PagamentoDinheiro(cliente, motorista, valor, dinheiro);
+            PagamentoDinheiro pagamento = new PagamentoDinheiro(cliente, motorista, valor);
             try {
                 pagamentoDinheiroRepository.save(pagamento);
             } catch (Exception e) {

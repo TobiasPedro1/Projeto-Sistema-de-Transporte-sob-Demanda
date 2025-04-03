@@ -7,6 +7,8 @@ import model.VeiculoSuv;
 import model.VeiculoEconomico;
 import model.VeiculoMoto;
 import model.VeiculoLuxo;
+import model.Motorista;
+import repository.MotoristaRepository;
 import repository.VeiculoRepository;
 import repository.VeiculoSuvRepository;
 import repository.VeiculoEconomicoRepository;
@@ -73,4 +75,25 @@ public class VeiculoService {
             throw new SalvaFalhaException("Erro ao deletar veículo.", e);
         }
     }
+
+    public void cadastrarVeiculo(String tipo, String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
+        MotoristaRepository motoristaRepository = new MotoristaRepository();
+        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
+        if (motorista == null) {
+            throw new RuntimeException("Motorista não encontrado.");
+        }
+
+        Veiculo veiculo;
+        switch (tipo.toLowerCase()) {
+            case "economico" -> veiculo = new VeiculoEconomico(placa, marca, modelo, qtdDePassageiros, ano);
+            case "suv" -> veiculo = new VeiculoSuv(placa, marca, modelo, qtdDePassageiros, ano);
+            case "moto" -> veiculo = new VeiculoMoto(placa, marca, modelo, qtdDePassageiros, ano);
+            case "luxo" -> veiculo = new VeiculoLuxo(placa, marca, modelo, qtdDePassageiros, ano);
+            default -> throw new IllegalArgumentException("Tipo de veículo inválido.");
+        }
+
+        motorista.setVeiculo(veiculo);
+        veiculoRepository.save(veiculo);
+    }
+
 }

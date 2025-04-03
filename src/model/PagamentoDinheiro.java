@@ -3,7 +3,7 @@ package model;
 public class PagamentoDinheiro extends Pagamento {
     private double dinheiroEspecie;
 
-    public PagamentoDinheiro(Cliente cliente, Motorista motorista, double valor, double dineheiroEspecie){
+    public PagamentoDinheiro(Cliente cliente, Motorista motorista, double valor){
         super(cliente, motorista, valor);
         this.dinheiroEspecie = dinheiroEspecie;
     }

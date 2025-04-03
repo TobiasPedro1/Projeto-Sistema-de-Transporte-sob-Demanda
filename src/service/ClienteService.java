@@ -48,4 +48,11 @@ public class ClienteService {
         cliente.adicionarAvaliacao(avaliacao);
     }
 
+    public Cliente buscarClientePorCpf(String cpf) {
+        try {
+            return clienteRepository.clienteFindByCpf(cpf);
+        } catch (Exception e) {
+            throw new CpfFalhaException("Cliente não encontrado com o CPF: " + cpf);
+        }
+    }
 }

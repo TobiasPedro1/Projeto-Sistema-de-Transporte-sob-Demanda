@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.CpfFalhaException;
 import exceptions.MotoristaInvalidoException;
 import exceptions.MotoristaNaoEncontradoException;
 import exceptions.SalvaFalhaException;
@@ -58,5 +59,12 @@ public class MotoristaService {
 
     }
 
+    public Motorista buscarMotoristaPorCpf(String cpf) {
+        try {
+            return motoristaRepository.motoristaFindByCpf(cpf);
+        } catch (Exception e) {
+            throw new CpfFalhaException("Motorista não encontrado com o CPF: " + cpf);
+        }
+    }
 
 }

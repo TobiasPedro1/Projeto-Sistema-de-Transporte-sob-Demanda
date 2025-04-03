@@ -20,16 +20,16 @@ public class PagamentoCreditoService {
         this.pagamentoCreditoRepository = pagamentoCreditoRepository;
     }
 
-    public PagamentoCredito pagar(Cliente cliente, Motorista motorista, double valor, String numeroCartao) {
-        var contaCliente = cliente.getConta();
-        var contaMotorista = motorista.getConta();
+    public PagamentoCredito pagar(Cliente cliente, Motorista motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        var contaCliente = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
+        var contaMotorista = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
 
         if (contaCliente.getSaldo() >= valor) {
             contaCliente.sacar(valor);
             contaMotorista.depositar(valor);
             System.out.println("Pagamento com crédito efetuado com sucesso!");
 
-            PagamentoCredito pagamento = new PagamentoCredito(cliente, motorista, valor, numeroCartao);
+            PagamentoCredito pagamento = new PagamentoCredito(cliente, motorista, valor, chavePixOuCartaoCliente);
             try {
                 pagamentoCreditoRepository.save(pagamento);
             } catch (Exception e){

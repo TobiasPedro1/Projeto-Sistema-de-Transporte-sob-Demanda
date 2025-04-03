@@ -58,38 +58,53 @@ public class Facade {
     }
 
     public void cadastrarCliente(String nome, String cpf, String numConta) {
-        Cliente cliente = new Cliente(nome, cpf, new ContaBancaria(numConta));
         if(validarCliente(cpf)) {
+            Cliente cliente = new Cliente(nome, cpf, new ContaBancaria(numConta));
             clienteService.cadastrarCliente(cliente);
+        }else {
+            throw new CpfFalhaException("CPF inválido ou já cadastrado.");
         }
-        throw new CpfFalhaException("CPF inválido ou já cadastrado.");
     }
 
     public boolean validarCliente(String cpf) {
-        ClienteRepository clienteRepository = new ClienteRepository();
-        Cliente cliente = clienteRepository.clienteFindByCpf(cpf);
-        return clienteService.validarCliente(cliente);
+        return clienteService.validarCliente(clienteService.buscarClientePorCpf(cpf));
     }
 
     public void cadastrarMotorista(String nome, String cpf, String habilitacao, String contaBancaria){
-        Motorista motorista = new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria));
         if(validarMotorista(cpf)) {
+            Motorista motorista = new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria));
             motoristaService.cadastrarMotorista(motorista);
+        } else {
+            throw new CpfFalhaException("CPF inválido ou já cadastrado.");
         }
-        throw new CpfFalhaException ("CPF inválido ou já cadastrado.");
-
     }
 
     public boolean validarMotorista(String cpf) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpf);
-        return motoristaService.validarMotorista(motorista);
+        return motoristaService.validarMotorista(motoristaService.buscarMotoristaPorCpf(cpf));
     }
 
     public Motorista selecionarMotoristaAleatorio() {
         return motoristaService.selecionarMotoristaAleatorio();
     }
 
+    public void cadastrarVeiculo(String tipo, String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
+        Motorista motorista = motoristaService.buscarMotoristaPorCpf(cpfMotorista);
+        if (motorista == null) throw new RuntimeException("Motorista não encontrado.");
+
+        Veiculo veiculo;
+        switch (tipo.toLowerCase()) {
+            case "economico" -> veiculo = new VeiculoEconomico(placa, marca, modelo, qtdDePassageiros, ano);
+            case "suv" -> veiculo = new VeiculoSuv(placa, marca, modelo, qtdDePassageiros, ano);
+            case "moto" -> veiculo = new VeiculoMoto(placa, marca, modelo, qtdDePassageiros, ano);
+            case "luxo" -> veiculo = new VeiculoLuxo(placa, marca, modelo, qtdDePassageiros, ano);
+            default -> throw new IllegalArgumentException("Tipo de veículo inválido.");
+        }
+
+        motorista.setVeiculo(veiculo);
+        veiculoService.save(veiculo);
+    }
+
+/*
     public void cadastrarVeiculoEconomico(String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
         MotoristaRepository motoristaRepository = new MotoristaRepository();
         Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
@@ -124,10 +139,19 @@ public class Facade {
         motorista.setVeiculo(veiculoLuxo);
         veiculoService.save(veiculoLuxo);
         veiculoLuxoService.save(veiculoLuxo);
+    }*/
+
+    public Pagamento pagarCorrida(Cliente cliente, Motorista motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        return switch (metodoPagamento.toLowerCase()) {
+            case "pix" -> pagamentoPixService.pagarCorrida(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+            case "cartao" -> pagamentoCreditoService.pagar(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+            case "dinheiro" -> pagamentoDinheiroService.pagar(cliente, motorista, valor);
+            default -> throw new IllegalArgumentException("Método de pagamento inválido.");
+        };
     }
 
-    public PagamentoCredito pagarCorridaComCatao(Cliente cliente, Motorista motorista, double valor, String numeroCartao) {
-        return pagamentoCreditoService.pagar(cliente, motorista, valor, numeroCartao);
+    public PagamentoCredito pagarCorridaComCatao(Cliente cliente, Motorista motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        return pagamentoCreditoService.pagar(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
     }
 
     public PagamentoCredito procurarPagamentoCreditoPorData(LocalDateTime data) {
@@ -142,8 +166,8 @@ public class Facade {
         pagamentoCreditoService.delete(pagamento);
     }
 
-    public PagamentoDinheiro pagarCorridaComDinheiro(Cliente cliente, Motorista motorista, double valor, double dinheiro) {
-        return pagamentoDinheiroService.pagar(cliente, motorista, valor, dinheiro);
+    public PagamentoDinheiro pagarCorridaComDinheiro(Cliente cliente, Motorista motorista, double valor) {
+        return pagamentoDinheiroService.pagar(cliente, motorista, valor);
     }
 
     public PagamentoDinheiro procurarPagamentoDinheiroPorData(LocalDateTime data) {
