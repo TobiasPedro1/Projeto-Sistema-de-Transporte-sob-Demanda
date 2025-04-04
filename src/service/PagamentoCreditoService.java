@@ -5,6 +5,8 @@ import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.PagamentoCredito;
+import repository.ClienteRepository;
+import repository.MotoristaRepository;
 import repository.PagamentoCreditoRepository;
 
 import java.time.LocalDateTime;
@@ -20,7 +22,15 @@ public class PagamentoCreditoService {
         this.pagamentoCreditoRepository = pagamentoCreditoRepository;
     }
 
-    public PagamentoCredito pagar(Cliente cliente, Motorista motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+    public PagamentoCredito pagar(String cliente, String motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        Motorista motoristaobjt;
+        Cliente clienteobjt;
+        ClienteRepository  clienteRepository = new ClienteRepository();
+        MotoristaRepository motoristaRepository = new MotoristaRepository();
+
+        motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
+        clienteobjt = clienteRepository.clienteFindByNome(cliente);
+
         var contaCliente = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
         var contaMotorista = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
 
@@ -29,7 +39,7 @@ public class PagamentoCreditoService {
             contaMotorista.depositar(valor);
             System.out.println("Pagamento com crédito efetuado com sucesso!");
 
-            PagamentoCredito pagamento = new PagamentoCredito(cliente, motorista, valor, chavePixOuCartaoCliente);
+            PagamentoCredito pagamento = new PagamentoCredito(clienteobjt, motoristaobjt, valor, chavePixOuCartaoCliente);
             try {
                 pagamentoCreditoRepository.save(pagamento);
             } catch (Exception e){

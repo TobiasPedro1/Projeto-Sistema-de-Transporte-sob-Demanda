@@ -58,12 +58,7 @@ public class Facade {
     }
 
     public void cadastrarCliente(String nome, String cpf, String numConta) {
-        if(validarCliente(cpf)) {
-            Cliente cliente = new Cliente(nome, cpf, new ContaBancaria(numConta));
-            clienteService.cadastrarCliente(cliente);
-        }else {
-            throw new CpfFalhaException("CPF inválido ou já cadastrado.");
-        }
+        clienteService.cadastrarCliente(new Cliente(nome, cpf, new ContaBancaria(numConta)));
     }
 
     public boolean validarCliente(String cpf) {
@@ -71,12 +66,7 @@ public class Facade {
     }
 
     public void cadastrarMotorista(String nome, String cpf, String habilitacao, String contaBancaria){
-        if(validarMotorista(cpf)) {
-            Motorista motorista = new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria));
-            motoristaService.cadastrarMotorista(motorista);
-        } else {
-            throw new CpfFalhaException("CPF inválido ou já cadastrado.");
-        }
+            motoristaService.cadastrarMotorista(new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria)));
     }
 
     public boolean validarMotorista(String cpf) {
@@ -88,20 +78,7 @@ public class Facade {
     }
 
     public void cadastrarVeiculo(String tipo, String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        Motorista motorista = motoristaService.buscarMotoristaPorCpf(cpfMotorista);
-        if (motorista == null) throw new RuntimeException("Motorista não encontrado.");
-
-        Veiculo veiculo;
-        switch (tipo.toLowerCase()) {
-            case "economico" -> veiculo = new VeiculoEconomico(placa, marca, modelo, qtdDePassageiros, ano);
-            case "suv" -> veiculo = new VeiculoSuv(placa, marca, modelo, qtdDePassageiros, ano);
-            case "moto" -> veiculo = new VeiculoMoto(placa, marca, modelo, qtdDePassageiros, ano);
-            case "luxo" -> veiculo = new VeiculoLuxo(placa, marca, modelo, qtdDePassageiros, ano);
-            default -> throw new IllegalArgumentException("Tipo de veículo inválido.");
-        }
-
-        motorista.setVeiculo(veiculo);
-        veiculoService.save(veiculo);
+        veiculoService.cadastrarVeiculo(tipo, placa, marca, modelo, qtdDePassageiros, ano, cpfMotorista);
     }
 
 /*
@@ -141,19 +118,20 @@ public class Facade {
         veiculoLuxoService.save(veiculoLuxo);
     }*/
 
-    public Pagamento pagarCorrida(String cliente, String motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
-        Cliente clienteobj = clienteService.buscarClientePorNome(cliente);
-        Motorista motoristaobj = motoristaService.buscarMotoristaPorNome(motorista);
-        return switch (metodoPagamento.toLowerCase()) {
-            case "pix" -> pagamentoPixService.pagarCorrida(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-            case "cartao" -> pagamentoCreditoService.pagar(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-            case "dinheiro" -> pagamentoDinheiroService.pagar(clienteobj, motoristaobj, valor);
-            default -> throw new IllegalArgumentException("Método de pagamento inválido.");
-        };
-    }
+    // VER COMO VAI FICAR NO MENU DO CLIENTE (ALTERA PARA INDIVIDUAL OU NÃO)
+//    public Pagamento pagarCorrida(String cliente, String motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+//        Cliente clienteobj = clienteService.buscarClientePorNome(cliente);
+//        Motorista motoristaobj = motoristaService.buscarMotoristaPorNome(motorista);
+//        return switch (metodoPagamento.toLowerCase()) {
+//            case "pix" -> pagamentoPixService.pagarCorrida(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+//            case "cartao" -> pagamentoCreditoService.pagar(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+//            case "dinheiro" -> pagamentoDinheiroService.pagar(clienteobj, motoristaobj, valor);
+//            default -> throw new IllegalArgumentException("Método de pagamento inválido.");
+//        };
+//    }
 
-    public PagamentoCredito pagarCorridaComCatao(Cliente cliente, Motorista motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
-        return pagamentoCreditoService.pagar(cliente, motorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
+    public PagamentoCredito pagarCorridaComCartao(String nomeCliente, String nomeMotorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
+        return pagamentoCreditoService.pagar(nomeCliente, nomeMotorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
     }
 
     public PagamentoCredito procurarPagamentoCreditoPorData(LocalDateTime data) {
@@ -168,8 +146,8 @@ public class Facade {
         pagamentoCreditoService.delete(pagamento);
     }
 
-    public PagamentoDinheiro pagarCorridaComDinheiro(Cliente cliente, Motorista motorista, double valor) {
-        return pagamentoDinheiroService.pagar(cliente, motorista, valor);
+    public PagamentoDinheiro pagarCorridaComDinheiro(String nomeCliente, String nomeMotorista, double valor) {
+        return pagamentoDinheiroService.pagar(nomeCliente, nomeMotorista, valor);
     }
 
     public PagamentoDinheiro procurarPagamentoDinheiroPorData(LocalDateTime data) {
@@ -184,8 +162,8 @@ public class Facade {
         pagamentoDinheiroService.delete(pagamento);
     }
 
-    public PagamentoPix pagarCorridaComPix(Cliente cliente, Motorista motorista, double valor, String chavePixCliente, String chavePixMotorista) {
-        return pagamentoPixService.pagarCorrida(cliente, motorista, valor, chavePixCliente, chavePixMotorista);
+    public PagamentoPix pagarCorridaComPix(String nomeCliente, String nomeMotorista, double valor, String chavePixCliente, String chavePixMotorista) {
+        return pagamentoPixService.pagarCorrida(nomeCliente, nomeMotorista, valor, chavePixCliente, chavePixMotorista);
     }
 
     public PagamentoPix procurarPagamentoPixPorChave(String chavePix) {
@@ -218,6 +196,10 @@ public class Facade {
 
     public Viagem chamarViagem(String origem, String destino, double valor, String nomeCliente) {
         return viagemService.chamarViagem(origem, destino, valor, nomeCliente);
+    }
+
+    public Viagem chamarViagemEntrega( double valor, String origem, String destino, String encomenda) {
+        return viagemService.chamarViagemEntrega( origem,destino ,valor , encomenda);
     }
 
     public Viagem finalizarViagem(Viagem viagem) {

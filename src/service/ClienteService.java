@@ -16,11 +16,15 @@ public class ClienteService {
     }
 
     public void cadastrarCliente(Cliente cliente) {
-        try {
-            clienteRepository.save(cliente);
-            System.out.println("Cliente adicionado com sucesso.");
-        } catch (Exception e) {
-            throw new SalvaFalhaException("Erro ao adicionar cliente.", e);
+        if (validarCliente(cliente)) {
+            throw new CpfFalhaException("CPF inválido ou já cadastrado.");
+        } else {
+            try {
+                clienteRepository.save(cliente);
+                System.out.println("Cliente adicionado com sucesso.");
+            } catch (Exception e) {
+                throw new SalvaFalhaException("Erro ao adicionar cliente.", e);
+            }
         }
     }
 

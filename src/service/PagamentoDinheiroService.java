@@ -6,6 +6,8 @@ import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.PagamentoDinheiro;
+import repository.ClienteRepository;
+import repository.MotoristaRepository;
 import repository.PagamentoDinheiroRepository;
 
 import java.time.LocalDateTime;
@@ -21,16 +23,24 @@ public class PagamentoDinheiroService {
         this.pagamentoDinheiroRepository = pagamentoDinheiroRepository;
     }
 
-    public PagamentoDinheiro pagar(Cliente cliente, Motorista motorista, double valor) {
-        var contaCliente = cliente.getConta();
-        var contaMotorista = motorista.getConta();
+    public PagamentoDinheiro pagar(String nomeCliente, String nomeMotorista, double valor) {
+        Motorista motoristaobjt;
+        Cliente clienteobjt;
+        ClienteRepository clienteRepository = new ClienteRepository();
+        MotoristaRepository motoristaRepository = new MotoristaRepository();
+
+        motoristaobjt = motoristaRepository.motoristaFindByNome(nomeMotorista);
+        clienteobjt = clienteRepository.clienteFindByNome(nomeCliente);
+
+        var contaCliente = clienteobjt.getConta();
+        var contaMotorista = motoristaobjt.getConta();
 
         if (contaCliente.getSaldo() >= valor) {
             contaCliente.sacar(valor);
             contaMotorista.depositar(valor);
             System.out.println("Pagamento em dinheiro efetuado com sucesso!");
 
-            PagamentoDinheiro pagamento = new PagamentoDinheiro(cliente, motorista, valor);
+            PagamentoDinheiro pagamento = new PagamentoDinheiro(clienteobjt, motoristaobjt, valor);
             try {
                 pagamentoDinheiroRepository.save(pagamento);
             } catch (Exception e) {

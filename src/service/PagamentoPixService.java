@@ -5,6 +5,8 @@ import model.Cliente;
 import model.Motorista;
 import model.PagamentoPix;
 import model.ContaBancaria;
+import repository.ClienteRepository;
+import repository.MotoristaRepository;
 import repository.PagamentoPixRepository;
 
 import java.util.List;
@@ -19,7 +21,16 @@ public class PagamentoPixService {
         this.pagamentoPixRepository = pagamentoPixRepository;
     }
 
-    public PagamentoPix pagarCorrida(Cliente cliente, Motorista motorista, double valor, String chavePixCliente, String chavePixMotorista) {
+    public PagamentoPix pagarCorrida(String cliente, String motorista, double valor, String chavePixCliente, String chavePixMotorista) {
+        Motorista motoristaobjt;
+        Cliente clienteobjt;
+        ClienteRepository clienteRepository = new ClienteRepository();
+        MotoristaRepository motoristaRepository = new MotoristaRepository();
+
+        motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
+        clienteobjt = clienteRepository.clienteFindByNome(cliente);
+
+
         ContaBancaria contaCliente = contaBancariaService.buscarContaPorChavePix(chavePixCliente);
         ContaBancaria contaMotorista = contaBancariaService.buscarContaPorChavePix(chavePixMotorista);
 
@@ -28,7 +39,7 @@ public class PagamentoPixService {
             contaMotorista.depositar(valor);
             System.out.println("Pagamento efetuado com sucesso!");
 
-            PagamentoPix pagamento = new PagamentoPix(cliente, motorista, valor, chavePixCliente);
+            PagamentoPix pagamento = new PagamentoPix(clienteobjt, motoristaobjt, valor, chavePixCliente);
             try {
                 pagamentoPixRepository.save(pagamento);
             } catch (Exception e) {

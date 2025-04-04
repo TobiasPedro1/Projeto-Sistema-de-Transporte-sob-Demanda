@@ -18,8 +18,9 @@ public class MenuCliente {
             System.out.println("========= Menu Cliente ========="+
                                 "1. Cadastrar Cliente.\n"+
                                 "2. Chamar Viagem.\n"+
-                                "3. Pagar Viagem.\n"+
-                                "4. Avaliar Viagem.\n"+
+                                "3. Chamar Viagem Entrega.\n"+
+                                "4. Pagar Viagem.\n"+
+                                "5. Avaliar Viagem.\n"+
                                 "0. Voltar ao Menu Principal.\n"+
                                "================================");
             System.out.print("Escolha uma opção: ");
@@ -30,7 +31,7 @@ public class MenuCliente {
             switch(opcao){
                 case 1 -> cadastrarCliente();
                 case 2 -> chamarViagem();
-                case 3 -> pagarViagem();
+                case 3 -> new MenuPagamentoCliente(facade).exibirMenu();
                 case 4 -> avaliarViagem();
                 case 0 -> System.out.println("Voltando ao Menu Principal...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
@@ -65,6 +66,22 @@ public class MenuCliente {
         facade.chamarViagem(origem, destino, valor, nomeCliente);
     }
 
+    public void chamarViagemEntrega(){
+        System.out.println("========= Chamar Viagem Entrega =========");
+        System.out.print("Digite a encomenda que será transportada: ");
+        String encomenda = teclado.nextLine();
+        System.out.print("Digite o valor da entrega: ");
+        double valor = teclado.nextDouble();
+        teclado.nextLine();
+        System.out.print("Digite o endereco de origem: ");
+        String origem = teclado.nextLine();
+        System.out.print("Digite o endereco de destino: ");
+        String destino = teclado.nextLine();
+
+        facade.chamarViagemEntrega(valor, origem, destino, encomenda);
+    }
+
+    /*
     public void pagarViagem(){
         System.out.println("========= Pagar Viagem =========");
         System.out.print("Digite o nome do cliente: ");
@@ -77,16 +94,23 @@ public class MenuCliente {
         String metodoPagamento = teclado.nextLine().toLowerCase();
         String pixOuCartaoCliente = "";
         String pixOuCartaoMotorista = "";
-        if(metodoPagamento.equals("Cartao")|| metodoPagamento.equals("Pix")){
-            System.out.println("Informe o Pix ou cartão do cliente:");
+        if(metodoPagamento.equals("cartao")){
+            System.out.println("Informe o Cartão do cliente:");
             pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Pix ou cartão do motorista:");
+            System.out.println("Informe o Cartão ou cartão do motorista:");
             pixOuCartaoMotorista = teclado.nextLine();
+            facade.pagarCorridaComCartao(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
+        } else if (metodoPagamento.equals("pix")) {
+            System.out.println("Informe o Pix do cliente:");
+            pixOuCartaoCliente = teclado.nextLine();
+            System.out.println("Informe o Pix do motorista:");
+            pixOuCartaoMotorista = teclado.nextLine();
+            facade.pagarCorridaComPix(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
+        }else {
+            facade.pagarCorridaComDinheiro(nomeCliente, nomeMotorista ,valor);
         }
-
-        facade.pagarCorrida(nomeCliente, nomeMotorista ,valor, metodoPagamento, pixOuCartaoCliente, pixOuCartaoMotorista);
     }
-
+    */
     public void avaliarViagem(){
         System.out.println("========= Avaliar Viagem =========");
 //        System.out.print("Digite o nome do cliente: ");
