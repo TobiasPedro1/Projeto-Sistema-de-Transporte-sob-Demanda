@@ -19,6 +19,8 @@ public class MenuCliente {
                                 "1. Cadastrar Cliente.\n"+
                                 "2. Chamar Viagem.\n"+
                                 "3. Chamar Viagem Entrega.\n"+
+                    // finalizaar viagem
+                    // cadastrar conta
                                 "4. Pagar Viagem.\n"+
                                 "5. Avaliar Viagem.\n"+
                                 "0. Voltar ao Menu Principal.\n"+
@@ -32,7 +34,7 @@ public class MenuCliente {
                 case 1 -> cadastrarCliente();
                 case 2 -> chamarViagem();
                 case 3 -> new MenuPagamentoCliente(facade).exibirMenu();
-                case 4 -> avaliarViagem();
+                case 4 -> avaliarViagemCliente();
                 case 0 -> System.out.println("Voltando ao Menu Principal...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }
@@ -48,7 +50,10 @@ public class MenuCliente {
         String cpf = teclado.nextLine();
         System.out.print("Digite o numero da conta bancaria: ");
         String contaBancaria = teclado.nextLine();
-        facade.cadastrarCliente(nome, cpf, contaBancaria);
+        System.out.print("Digite o saldo inicial da conta bancaria: ");
+        double saldo = teclado.nextDouble();
+        teclado.nextLine();
+        facade.cadastrarCliente(nome, cpf, contaBancaria, saldo);
     }
 
     public void chamarViagem(){
@@ -67,6 +72,8 @@ public class MenuCliente {
     }
 
     public void chamarViagemEntrega(){
+        //faze switch de qual tipo do carro a viagem
+
         System.out.println("========= Chamar Viagem Entrega =========");
         System.out.print("Digite a encomenda que será transportada: ");
         String encomenda = teclado.nextLine();
@@ -111,10 +118,8 @@ public class MenuCliente {
         }
     }
     */
-    public void avaliarViagem(){
+    public void avaliarViagemCliente(){
         System.out.println("========= Avaliar Viagem =========");
-//        System.out.print("Digite o nome do cliente: ");
-//        String nomeCliente = teclado.nextLine();
         System.out.print("Digite o nome do motorista: ");
         String nomeMotorista = teclado.nextLine();
         System.out.print("Digite a nota da viagem (1 a 5): ");
