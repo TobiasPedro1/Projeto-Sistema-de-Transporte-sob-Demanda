@@ -40,4 +40,44 @@ public class MenuAvaliacao {
 
         facade.avaliarCliente(nomeCliente, comentario, nota);
     }
+
+    public void listarAvaliacoes() {
+        System.out.println("========= Listar Avaliações =========");
+        var avaliacoes = facade.listarAvaliacoes();
+        if (avaliacoes.isEmpty()) {
+            System.out.println("Nenhuma avaliação encontrada.");
+        } else {
+            for (int i = 0; i < avaliacoes.size(); i++) {
+                System.out.println((i + 1) + ". " + avaliacoes.get(i));
+            }
+        }
+    }
+
+    public void deletarAvaliacao() {
+        System.out.println("========= Deletar Avaliação =========");
+        var avaliacoes = facade.listarAvaliacoes();
+        if (avaliacoes.isEmpty()) {
+            System.out.println("Nenhuma avaliação encontrada para deletar.");
+            return;
+        }
+
+        for (int i = 0; i < avaliacoes.size(); i++) {
+            System.out.println((i + 1) + ". " + avaliacoes.get(i));
+        }
+
+        System.out.print("Escolha o número da avaliação para deletar: ");
+        int escolha = teclado.nextInt();
+        teclado.nextLine();
+
+        if (escolha > 0 && escolha <= avaliacoes.size()) {
+            try {
+                facade.deletarAvaliacao(avaliacoes.get(escolha - 1));
+                System.out.println("Avaliação deletada com sucesso!");
+            } catch (Exception e) {
+                System.out.println("Erro ao deletar a avaliação: " + e.getMessage());
+            }
+        } else {
+            System.out.println("Opção inválida. Tente novamente.");
+        }
+    }
 }

@@ -21,6 +21,7 @@ public class MenuAdm {
             System.out.println("2. Gerenciar Clientes");
             System.out.println("3. Gerenciar Veículos");
             System.out.println("4. Gerenciar Pagamentos");
+            System.out.println("5. Gerenciar Avaliações");
             System.out.println("0. Sair");
             System.out.println("======================================");
             System.out.print("Escolha uma opção: ");
@@ -33,6 +34,7 @@ public class MenuAdm {
                 case 2 -> gerenciarClientes();
                 case 3 -> gerenciarVeiculos();
                 case 4 -> gerenciarPagamentos();
+                case 5 -> gerenciarAvaliacoes();
                 case 0 -> System.out.println("Saindo do sistema...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }
@@ -55,13 +57,87 @@ public class MenuAdm {
         System.out.println("========= Gerenciar Veículos =========");
         System.out.print("Digite o CPF do motorista para gerenciar os veículos: ");
         String cpfMotorista = teclado.nextLine();
-        // Implementar lógica para listar, adicionar ou remover veículos associados ao motorista
-        System.out.println("Funcionalidade de gerenciamento de veículos ainda não implementada.");
+
+        int opcao;
+        do {
+            System.out.println("1. Listar Veículos");
+            System.out.println("2. Remover Veículo");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha uma opção: ");
+            opcao = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcao) {
+                case 1 -> listarVeiculos();
+                case 2 -> removerVeiculo();
+                case 0 -> System.out.println("Voltando ao menu anterior...");
+                default -> System.out.println("Opção inválida! Tente novamente.");
+            }
+        } while (opcao != 0);
+    }
+
+    private void listarVeiculos() {
+        System.out.println("========= Listar Todos os Veículos =========");
+        var veiculos = facade.listarVeiculos();
+        if (veiculos.isEmpty()) {
+            System.out.println("Nenhum veículo encontrado.");
+        } else {
+            veiculos.forEach(System.out::println);
+        }
+    }
+
+    private void removerVeiculo() {
+        System.out.println("========= Remover Veículo =========");
+        System.out.print("Digite a placa do veículo a ser removido: ");
+        String placa = teclado.nextLine();
+
+        try {
+            facade.deletarVeiculo(placa);
+            System.out.println("Veículo removido com sucesso!");
+        } catch (Exception e) {
+            System.out.println("Erro ao remover o veículo: " + e.getMessage());
+        }
     }
 
     private void gerenciarPagamentos() {
         System.out.println("========= Gerenciar Pagamentos =========");
-        MenuPagamentoCliente menuPagamentoCliente = new MenuPagamentoCliente(facade);
-        menuPagamentoCliente.exibirMenu();
+        int opcao;
+        do {
+            System.out.println("1. Listar Pagamentos");
+            System.out.println("2. Buscar Pagamento por Data");
+            System.out.println("3. Deletar Pagamento");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha uma opção: ");
+            opcao = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcao) {
+                case 1 -> new MenuPagamentoCliente(facade).listarPagamentos();
+                case 2 -> new MenuPagamentoCliente(facade).buscarPagamentoPorData();
+                case 3 -> new MenuPagamentoCliente(facade).deletarPagamento();
+                case 0 -> System.out.println("Voltando ao menu anterior...");
+                default -> System.out.println("Opção inválida! Tente novamente.");
+            }
+        } while (opcao != 0);
+    }
+
+    private void gerenciarAvaliacoes() {
+        System.out.println("========= Gerenciar Avaliações =========");
+        int opcao;
+        do {
+            System.out.println("1. Listar Avaliações");
+            System.out.println("2. Deletar Avaliação");
+            System.out.println("0. Voltar");
+            System.out.print("Escolha uma opção: ");
+            opcao = teclado.nextInt();
+            teclado.nextLine();
+
+            switch (opcao) {
+                case 1 -> new MenuAvaliacao(facade).listarAvaliacoes();
+                case 2 -> new MenuAvaliacao(facade).deletarAvaliacao();
+                case 0 -> System.out.println("Voltando ao menu anterior...");
+                default -> System.out.println("Opção inválida! Tente novamente.");
+            }
+        } while (opcao != 0);
     }
 }

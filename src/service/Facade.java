@@ -225,4 +225,39 @@ public class Facade {
     public void avaliarCliente(String nomeCliente, String comentario, int nota) {
         avaliacaoService.avaliarCliente(nomeCliente, comentario, nota);
     }
+
+    public List<Avaliacao> listarAvaliacoes() {
+        return avaliacaoService.listarAvaliacoes();
+    }
+
+    public void deletarAvaliacao(Avaliacao avaliacao) {
+        avaliacaoService.deletarAvaliacao(avaliacao);
+    }
+
+    public List<VeiculoEconomico> listarVeiculosEconomicos() {
+        return veiculoEconomicoService.findAll();
+    }
+    public List<VeiculoSuv> listarVeiculosSuv() {
+        return veiculoSuvService.findAll();
+    }
+    public List<VeiculoMoto> listarVeiculosMoto() {
+        return veiculoMotoService.findAll();
+    }
+
+    public List<VeiculoLuxo> listarVeiculosLuxo() {
+        return veiculoLuxoService.findAll();
+    }
+
+    public List<Veiculo> listarVeiculos() {
+        return veiculoService.findAll();
+    }
+
+    public Veiculo buscarVeiculoPorPlaca(String placa) {
+        return veiculoService.findByPlaca(placa);
+    }
+
+    public void deletarVeiculo(String placa) {
+        Veiculo veiculo = veiculoService.findByPlaca(placa);
+        veiculoService.delete(veiculo);
+    }
 }

@@ -16,6 +16,8 @@ import repository.VeiculoMotoRepository;
 import repository.VeiculoLuxoRepository;
 import exceptions.SalvaFalhaException;
 
+import java.util.List;
+
 public class VeiculoService {
 
     private final VeiculoRepository veiculoRepository;
@@ -57,6 +59,10 @@ public class VeiculoService {
             throw new BuscaVeiculoFalhaException("Veículo não encontrado.");
         }
         return veiculo;
+    }
+
+    public List<Veiculo> findAll() {
+        return veiculoRepository.findAll();
     }
 
     public void delete(Veiculo veiculo) {

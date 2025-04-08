@@ -24,9 +24,9 @@ public class MenuPagamentoCliente {
             System.out.println("========= Menu Pagamento =========");
             System.out.println("1. Pagar Viagem.");
             System.out.println("2. Pagar Entrega.");
-            System.out.println("3. Listar Pagamentos.");
-            System.out.println("4. Buscar Pagamento por Data.");
-            System.out.println("5. Deletar Pagamento.");
+//            System.out.println("3. Listar Pagamentos.");
+//            System.out.println("4. Buscar Pagamento por Data.");
+//            System.out.println("5. Deletar Pagamento.");
             System.out.println("0. Voltar ao Menu Principal.");
             System.out.println("==================================");
             System.out.print("Escolha uma opção: ");
@@ -37,9 +37,9 @@ public class MenuPagamentoCliente {
             switch (opcao) {
                 case 1 -> pagarViagem();
                 case 2 -> pagarEntrega();
-                case 3 -> listarPagamentos();
-                case 4 -> buscarPagamentoPorData();
-                case 5 -> deletarPagamento();
+//                case 3 -> listarPagamentos();
+//                case 4 -> buscarPagamentoPorData();
+//                case 5 -> deletarPagamento();
                 case 0 -> System.out.println("Voltando ao Menu Principal...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }

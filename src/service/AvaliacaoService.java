@@ -10,6 +10,8 @@ import repository.AvaliacaoRepository;
 import repository.MotoristaRepository;
 import repository.ClienteRepository;
 
+import java.util.List;
+
 public class AvaliacaoService {
     private AvaliacaoRepository avaliacaoRepository;
     private MotoristaRepository motoristaRepository;
@@ -59,6 +61,21 @@ public class AvaliacaoService {
             }
         } else {
             throw new EntidadeNaoEncontrada("Cliente não encontrado.");
+        }
+    }
+
+    public List<Avaliacao> listarAvaliacoes() {
+        return avaliacaoRepository.findAll();
+    }
+
+    public void deletarAvaliacao(Avaliacao avaliacao) {
+        if (avaliacao == null ) {
+            throw new EntidadeNaoEncontrada("Avaliação não encontrada.");
+        }
+        try {
+            avaliacaoRepository.delete(avaliacao);
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao deletar a avaliação.", e);
         }
     }
 }

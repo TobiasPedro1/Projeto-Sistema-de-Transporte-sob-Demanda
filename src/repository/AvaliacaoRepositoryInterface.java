@@ -8,5 +8,5 @@ public interface AvaliacaoRepositoryInterface {
     void save(Avaliacao avaliacao);
     Avaliacao findByComentario(String comentario);
     List<Avaliacao> findAll();
-    void delete(String comentario);
+    void delete(Avaliacao avaliacao);
 }

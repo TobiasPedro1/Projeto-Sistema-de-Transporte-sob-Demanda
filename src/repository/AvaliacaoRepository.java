@@ -25,12 +25,11 @@ public class AvaliacaoRepository implements AvaliacaoRepositoryInterface {
         return avalicaoRepository;
     }
     @Override
-    public void delete(String comentario) {
-        Avaliacao avaliacao = findByComentario(comentario);
-        if (avaliacao != null) {
-            avalicaoRepository.remove(avaliacao);
-        } else{
-            System.out.println("Avaliação não encontrada.");
-        }
-    }
+ public void delete(Avaliacao avaliacao) {
+     if (avaliacao != null && avalicaoRepository.contains(avaliacao)) {
+         avalicaoRepository.remove(avaliacao);
+     } else {
+         System.out.println("Avaliação não encontrada ou inválida.");
+     }
+ }
 }
