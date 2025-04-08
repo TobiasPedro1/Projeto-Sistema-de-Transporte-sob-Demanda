@@ -34,7 +34,7 @@ public class MenuCliente {
                 case 1 -> cadastrarCliente();
                 case 2 -> chamarViagem();
                 case 3 -> new MenuPagamentoCliente(facade).exibirMenu();
-                case 4 -> avaliarViagemCliente();
+                case 4 -> new MenuAvaliacao(facade).avaliarViagemDoCliente();
                 case 0 -> System.out.println("Voltando ao Menu Principal...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }
@@ -72,7 +72,6 @@ public class MenuCliente {
     }
 
     public void chamarViagemEntrega(){
-        //faze switch de qual tipo do carro a viagem
 
         System.out.println("========= Chamar Viagem Entrega =========");
         System.out.print("Digite a encomenda que será transportada: ");
@@ -88,47 +87,5 @@ public class MenuCliente {
         facade.chamarViagemEntrega(valor, origem, destino, encomenda);
     }
 
-    /*
-    public void pagarViagem(){
-        System.out.println("========= Pagar Viagem =========");
-        System.out.print("Digite o nome do cliente: ");
-        String nomeCliente = teclado.nextLine();
-        System.out.println("digite o nome do motorista: ");
-        String nomeMotorista = teclado.nextLine();
-        System.out.print("Digite o valor da viagem: ");
-        double valor = teclado.nextDouble();
-        System.out.println("Informe o metodo de pagamento: Pix, Cartao ou Dinheiro");
-        String metodoPagamento = teclado.nextLine().toLowerCase();
-        String pixOuCartaoCliente = "";
-        String pixOuCartaoMotorista = "";
-        if(metodoPagamento.equals("cartao")){
-            System.out.println("Informe o Cartão do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Cartão ou cartão do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
-            facade.pagarCorridaComCartao(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
-        } else if (metodoPagamento.equals("pix")) {
-            System.out.println("Informe o Pix do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Pix do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
-            facade.pagarCorridaComPix(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
-        }else {
-            facade.pagarCorridaComDinheiro(nomeCliente, nomeMotorista ,valor);
-        }
-    }
-    */
-    public void avaliarViagemCliente(){
-        System.out.println("========= Avaliar Viagem =========");
-        System.out.print("Digite o nome do motorista: ");
-        String nomeMotorista = teclado.nextLine();
-        System.out.print("Digite a nota da viagem (1 a 5): ");
-        int nota = teclado.nextInt();
-        teclado.nextLine();
-        System.out.print("Digite o comentario da viagem: ");
-        String comentario = teclado.nextLine();
-
-        facade.avaliarMotorista(nomeMotorista, comentario, nota);
-    }
 
 }

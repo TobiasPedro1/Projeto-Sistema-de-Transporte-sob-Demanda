@@ -48,13 +48,13 @@ public class PagamentoService {
         }
     }
 
-    public Pagamento findByData(LocalDateTime data) {
+    public  List<Pagamento> findByData(LocalDateTime data) {
         try {
-            Pagamento pagamento = pagamentoRepository.findByData(data);
-            if (pagamento == null) {
+            List<Pagamento> pagamentos = pagamentoRepository.findByData(data);
+            if (pagamentos == null || pagamentos.isEmpty()) {
                 throw new SalvaFalhaException("Pagamento não encontrado", null);
             }
-            return pagamento;
+            return pagamentos;
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao buscar pagamento.", e);
         }

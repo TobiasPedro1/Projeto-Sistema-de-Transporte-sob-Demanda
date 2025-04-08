@@ -57,16 +57,16 @@ public class Facade {
 
     }
 
-    public void cadastrarCliente(String nome, String cpf, String numConta) {
-        clienteService.cadastrarCliente(new Cliente(nome, cpf, new ContaBancaria(numConta)));
+    public void cadastrarCliente(String nome, String cpf, String numConta, double saldo) {
+        clienteService.cadastrarCliente(new Cliente(nome, cpf, new ContaBancaria(numConta, saldo)));
     }
 
     public boolean validarCliente(String cpf) {
         return clienteService.validarCliente(clienteService.buscarClientePorCpf(cpf));
     }
 
-    public void cadastrarMotorista(String nome, String cpf, String habilitacao, String contaBancaria){
-            motoristaService.cadastrarMotorista(new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria)));
+    public void cadastrarMotorista(String nome, String cpf, String habilitacao, String contaBancaria, double saldo) {
+            motoristaService.cadastrarMotorista(new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria, saldo)));
     }
 
     public boolean validarMotorista(String cpf) {
@@ -182,7 +182,7 @@ public class Facade {
         return pagamentoService.pagarCorrida(cliente, motorista, valor);
     }
 
-    public Pagamento procurarPagamentoPorData(LocalDateTime data) {
+    public List<Pagamento> procurarPagamentoPorData(LocalDateTime data) {
         return pagamentoService.findByData(data);
     }
 

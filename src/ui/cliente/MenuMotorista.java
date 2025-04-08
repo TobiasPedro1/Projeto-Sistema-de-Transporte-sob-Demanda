@@ -29,7 +29,7 @@ public class MenuMotorista {
             switch(opcao){
                 case 1 -> cadastrarMotorista();
                 case 2 -> cadastrarVeiculo();
-                case 3 -> avaliarViagemMotorista();
+                case 3 -> new MenuAvaliacao(facade).avaliarViagemDoMotorista();
                 case 0 -> System.out.println("Voltando ao Menu Principal...");
                 default -> System.out.println("Opção inválida! Tente novamente.");
             }
@@ -91,16 +91,5 @@ public class MenuMotorista {
         }
     }
 
-    public void avaliarViagemMotorista(){
-        System.out.println("========= Avaliar Viagem =========");
-        System.out.print("Digite o nome do cliente: ");
-        String nomeCliente = teclado.nextLine();
-        System.out.print("Digite a nota do motorista (1 a 5): ");
-        int nota = teclado.nextInt();
-        teclado.nextLine();
-        System.out.print("Digite o comentario da viagem: ");
-        String comentario = teclado.nextLine();
 
-        facade.avaliarCliente(nomeCliente, comentario, nota);
-    }
 }

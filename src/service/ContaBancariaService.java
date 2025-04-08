@@ -11,8 +11,8 @@ public class ContaBancariaService {
         this.contaBancoRepository = contaBancoRepository;
     }
 
-    public void criarConta(String numeroConta) {
-        ContaBancaria contaBancaria = new ContaBancaria(numeroConta);
+    public void criarConta(String numeroConta, double saldo) {
+        ContaBancaria contaBancaria = new ContaBancaria(numeroConta, saldo);
         contaBancoRepository.save(contaBancaria);
     }
 

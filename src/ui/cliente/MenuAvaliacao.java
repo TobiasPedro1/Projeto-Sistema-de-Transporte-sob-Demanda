@@ -3,16 +3,16 @@ package ui.cliente;
 import java.util.Scanner;
 import service.Facade;
 
-public class MenuAvaliacaoCliente {
+public class MenuAvaliacao {
     private Facade facade;
     private Scanner teclado;
 
-    public MenuAvaliacaoCliente (Facade facade){
+    public MenuAvaliacao(Facade facade){
         this.facade = facade;
         this.teclado = new Scanner(System.in);
     }
 
-    public void avaliarViagem(){
+    public void avaliarViagemDoCliente(){
         System.out.println("========= Avaliar Viagem =========");
 //        System.out.print("Digite o nome do cliente: ");
 //        String nomeCliente = teclado.nextLine();
@@ -28,4 +28,16 @@ public class MenuAvaliacaoCliente {
         System.out.println("Avaliação enviada com sucesso!");
     }
 
+    public void avaliarViagemDoMotorista(){
+        System.out.println("========= Avaliar Viagem =========");
+        System.out.print("Digite o nome do cliente: ");
+        String nomeCliente = teclado.nextLine();
+        System.out.print("Digite a nota do motorista (1 a 5): ");
+        int nota = teclado.nextInt();
+        teclado.nextLine();
+        System.out.print("Digite o comentario da viagem: ");
+        String comentario = teclado.nextLine();
+
+        facade.avaliarCliente(nomeCliente, comentario, nota);
+    }
 }

@@ -6,7 +6,7 @@ import model.Pagamento;
 
 public interface PagamentoRepositoryInterface {
     void save(Pagamento pagamento);
-    Pagamento findByData(LocalDateTime dataHoraPagamento);
+    List<Pagamento> findByData(LocalDateTime dataHoraPagamento);
     List<Pagamento> findAll();
     void delete(Pagamento pagamento);
 }

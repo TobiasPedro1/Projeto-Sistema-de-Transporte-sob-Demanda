@@ -6,9 +6,9 @@ public class ContaBancaria {
     private PagamentoPix pagamentoPix;
     private PagamentoCredito pagamentoCredito;
 
-    public ContaBancaria(String numeroConta) {
+    public ContaBancaria(String numeroConta, double saldo) {
         this.numeroConta = numeroConta;
-        this.saldo = 0.0;
+        this.saldo = saldo;
     }
 
     public String getNumeroConta() {

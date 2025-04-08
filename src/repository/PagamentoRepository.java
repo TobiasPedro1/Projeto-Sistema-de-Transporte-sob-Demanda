@@ -16,13 +16,11 @@ public class PagamentoRepository implements PagamentoRepositoryInterface{
     }
 
     @Override
-    public Pagamento findByData(LocalDateTime data) {
+    public List<Pagamento> findByData(LocalDateTime data) {
         return pagamentoRepository.stream()
                 .filter(p -> p.getDataHoraPagamento().equals(data))
-                .findFirst()
-                .orElse(null);
+                .toList();
     }
-
     @Override
     public List<Pagamento> findAll(){
         return pagamentoRepository;
