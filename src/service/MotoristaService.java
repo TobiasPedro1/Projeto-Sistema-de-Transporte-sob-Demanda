@@ -24,6 +24,7 @@ public class MotoristaService {
     public void cadastrarMotorista(Motorista motorista) {
         try {
             motoristaRepository.save(motorista);
+            validarMotorista(motorista);
             System.out.println("Motorista adicionado com sucesso.");
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao adicionar Motorista.", e);
@@ -34,6 +35,7 @@ public class MotoristaService {
 
         if(verificaCPF(motorista.getCpf()) && motorista.getHabilitacao().length() == 11){
             motorista.setValidado(true);
+            motoristaRepository.save(motorista);
             return true;
         }else {
             motorista.setValidado(false);
@@ -67,11 +69,37 @@ public class MotoristaService {
         }
     }
 
+    public List<Motorista> listarMotoristas() {
+        try {
+            return motoristaRepository.findALL();
+        } catch (Exception e) {
+            throw new CpfFalhaException("Nenhum motorista encontrado.");
+        }
+    }
+
     public Motorista buscarMotoristaPorNome(String nome) {
         try {
             return motoristaRepository.motoristaFindByNome(nome);
         } catch (Exception e) {
             throw new CpfFalhaException("Motorista não encontrado com o nome: " + nome);
+        }
+    }
+
+    public void removerMotorista(String cpf) {
+        try {
+            motoristaRepository.deleteByCpf(cpf);
+//            System.out.println("Motorista removido com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao remover motorista.", e);
+        }
+    }
+
+    public void atualizarMotorista(Motorista motorista) {
+        try {
+            motoristaRepository.save(motorista);
+            System.out.println("Motorista atualizado com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao atualizar motorista.", e);
         }
     }
 }
