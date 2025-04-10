@@ -6,12 +6,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MotoristaRepository implements MotoristaRepositoryInterface{
-    List<Motorista> motoristas = new ArrayList<>();
+    private static MotoristaRepository instance;
+    private List<Motorista> motoristas = new ArrayList<>();
 
     @Override
     public List<Motorista> findALL(){
         return new ArrayList<>(motoristas);
     }
+
+    @Override
+    public  MotoristaRepository getInstance() {
+        if (instance == null) {
+            instance = new MotoristaRepository();
+        }
+        return instance;
+    }
+
 
     @Override
     public Motorista motoristaFindByNome(String nome) {
@@ -41,8 +51,8 @@ public class MotoristaRepository implements MotoristaRepositoryInterface{
     }
 
     @Override
-    public void deleteByName(String nome) {
-        if( motoristas.removeIf(motorista -> motorista.getNome().equals(nome))){
+    public void deleteByCpf(String nome) {
+        if( motoristas.removeIf(motorista -> motorista.getCpf().equals(nome))){
             System.out.println("Motorista removido com sucesso!");
 
         }

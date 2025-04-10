@@ -36,6 +36,7 @@ public class ViagemService implements ViagemServiceInterface {
             throw new ClienteNaoValidadoException("Cliente não validado.");
         }
 
+        System.out.println("Motorista Selecionado: " + motorista.getNome());
         Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
         motorista.setDisponivel(false);
 
@@ -57,7 +58,7 @@ public class ViagemService implements ViagemServiceInterface {
         if (motorista == null || !motorista.isDisponivel()) {
             throw new MotoristaNaoDisponivelException("Nenhum motorista disponível no momento.");
         }
-
+        System.out.println("Motorista Selecionado: " + motorista.getNome());
         Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
         motorista.setDisponivel(false);
 
@@ -77,7 +78,9 @@ public class ViagemService implements ViagemServiceInterface {
     }
 
     @Override
-    public Viagem finalizarViagem(Viagem viagem) {
+    public Viagem finalizarViagem(String destino) {
+        Viagem viagem = buscarViagemPorDestino(destino);
+
         Motorista motorista = viagem.getMotorista();
         motorista.setDisponivel(true);
 
@@ -86,8 +89,8 @@ public class ViagemService implements ViagemServiceInterface {
             viagemRepository.save(viagem);
             System.out.println("Viagem finalizada.");
             System.out.println("=================================================" +
-                    "valor da viagem a ser pago: " + viagem.getValor() +
-                    "\n=================================================");
+                                "\nvalor da viagem a ser pago: " + viagem.getValor() +
+                             "\n=================================================");
             return viagem;
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);

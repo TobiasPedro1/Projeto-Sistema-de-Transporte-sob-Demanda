@@ -63,4 +63,15 @@ public class Veiculo {
     public void setMotorista(Motorista motorista) {
         this.motorista = motorista;
     }
+
+    @Override
+    public String toString() {
+        return "Veiculo: " +
+                "placa: " + placa  +
+                ", marca: " + marca +
+                ", modelo: " + modelo +
+                ", qtdDePassageiros: " + qtdDePassageiros +
+                ", ano: " + ano +
+                ", motorista:" + motorista ;
+    }
 }

@@ -36,5 +36,11 @@ public class Cliente extends Pessoa {
         this.avaliacao.add(avaliacao);
     }
 
-
+    @Override
+    public String toString() {
+        return "Cliente:" + super.toString() +
+                ", validado: " + validado +
+                ", conta: " + conta +
+                ", avaliacao: " + avaliacao;
+    }
 }

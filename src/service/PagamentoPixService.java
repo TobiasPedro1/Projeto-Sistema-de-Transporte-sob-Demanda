@@ -15,30 +15,46 @@ public class PagamentoPixService {
 
     private final ContaBancariaService contaBancariaService;
     private final PagamentoPixRepository pagamentoPixRepository;
+    private final ClienteRepository clienteRepository;
+    private final MotoristaRepository motoristaRepository;
 
-    public PagamentoPixService(ContaBancariaService contaBancariaService, PagamentoPixRepository pagamentoPixRepository) {
+    public PagamentoPixService(ContaBancariaService contaBancariaService, PagamentoPixRepository pagamentoPixRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoPixRepository = pagamentoPixRepository;
+        this.clienteRepository = clienteRepository;
+        this.motoristaRepository = motoristaRepository;
     }
 
     public PagamentoPix pagarCorrida(String cliente, String motorista, double valor, String chavePixCliente, String chavePixMotorista) {
-        Motorista motoristaobjt;
-        Cliente clienteobjt;
-        ClienteRepository clienteRepository = new ClienteRepository();
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
+        // Buscar cliente e motorista
+        Motorista motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
+        if (motoristaobjt == null) {
+            throw new IllegalArgumentException("Motorista não encontrado: " + motorista);
+        }
 
-        motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
-        clienteobjt = clienteRepository.clienteFindByNome(cliente);
+        Cliente clienteobjt = clienteRepository.clienteFindByNome(cliente);
+        if (clienteobjt == null) {
+            throw new IllegalArgumentException("Cliente não encontrado: " + cliente);
+        }
 
+        // Buscar contas bancárias
+        ContaBancaria contaCliente = contaBancariaService.buscarContaPorNumero(clienteobjt.getConta().getNumeroConta());
+        if (contaCliente == null) {
+            throw new IllegalArgumentException("Conta bancária do cliente não encontrada.");
+        }
 
-        ContaBancaria contaCliente = contaBancariaService.buscarContaPorChavePix(chavePixCliente);
         ContaBancaria contaMotorista = contaBancariaService.buscarContaPorChavePix(chavePixMotorista);
+        if (contaMotorista == null) {
+            throw new IllegalArgumentException("Conta bancária do motorista não encontrada.");
+        }
 
+        // Verificar saldo e realizar pagamento
         if (contaCliente.getSaldo() >= valor) {
             contaCliente.sacar(valor);
             contaMotorista.depositar(valor);
             System.out.println("Pagamento efetuado com sucesso!");
 
+            // Criar e salvar o pagamento
             PagamentoPix pagamento = new PagamentoPix(clienteobjt, motoristaobjt, valor, chavePixCliente);
             try {
                 pagamentoPixRepository.save(pagamento);
@@ -47,7 +63,7 @@ public class PagamentoPixService {
             }
             return pagamento;
         } else {
-            throw new RuntimeException("Saldo insuficiente para efetuar o pagamento");
+            throw new IllegalArgumentException("Saldo insuficiente para efetuar o pagamento.");
         }
     }
 

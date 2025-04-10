@@ -21,6 +21,8 @@ public class Motorista extends Pessoa {
         this.veiculo = null;
     }
 
+
+
     public String getHabilitacao() {
         return habilitacao;
     }
@@ -63,5 +65,17 @@ public class Motorista extends Pessoa {
 
     public void adicionarAvaliacao(Avaliacao avaliacao){
         this.avaliacoes.add(avaliacao);
+    }
+
+    @Override
+    public String toString() {
+        return "{Motorista: " + super.toString() +
+                ", habilitacao='" + habilitacao +
+                ", validado=" + validado +
+                ", disponivel=" + disponivel +
+                ", conta=" + conta +
+                ", veiculo=" + veiculo +
+                ", avaliacoes=" + avaliacoes +
+                '}';
     }
 }

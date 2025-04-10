@@ -8,5 +8,6 @@ public interface MotoristaRepositoryInterface {
     Motorista motoristaFindByNome(String nome);
     Motorista motoristaFindByCpf(String cpf);
     void save(Motorista motorista);
-    void deleteByName(String nome);
+    void deleteByCpf(String cpf);
+    MotoristaRepository getInstance();
 }

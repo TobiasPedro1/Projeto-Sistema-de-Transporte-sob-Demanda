@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class MotoristaService {
     //aleterar para repositorio assim que criado
-    private MotoristaRepository motoristaRepository;
+    private final MotoristaRepository motoristaRepository;
 
     public MotoristaService (MotoristaRepository motoristaRepository){
         this.motoristaRepository = motoristaRepository;

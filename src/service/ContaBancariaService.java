@@ -4,6 +4,8 @@ import exceptions.*;
 import model.ContaBancaria;
 import repository.ContaBancoRepository;
 
+import java.util.List;
+
 public class ContaBancariaService {
     private final ContaBancoRepository contaBancoRepository;
 
@@ -11,9 +13,13 @@ public class ContaBancariaService {
         this.contaBancoRepository = contaBancoRepository;
     }
 
-    public void criarConta(String numeroConta, double saldo) {
-        ContaBancaria contaBancaria = new ContaBancaria(numeroConta, saldo);
+    public void criarConta(String numeroConta, double saldo, String pagamentoPix, String pagamentoCredito) {
+        ContaBancaria contaBancaria = new ContaBancaria(numeroConta, saldo, pagamentoPix, pagamentoCredito);
         contaBancoRepository.save(contaBancaria);
+    }
+
+    public List<ContaBancaria> findAll() {
+        return contaBancoRepository.findAll();
     }
 
     public ContaBancaria buscarContaPorNumero(String numeroConta) {

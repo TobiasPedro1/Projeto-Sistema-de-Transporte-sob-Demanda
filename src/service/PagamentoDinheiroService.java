@@ -17,17 +17,19 @@ public class PagamentoDinheiroService {
 
     private final ContaBancariaService contaBancariaService;
     private final PagamentoDinheiroRepository pagamentoDinheiroRepository;
+    private final ClienteRepository clienteRepository;
+    private final MotoristaRepository motoristaRepository;
 
-    public PagamentoDinheiroService(ContaBancariaService contaBancariaService, PagamentoDinheiroRepository pagamentoDinheiroRepository) {
+    public PagamentoDinheiroService(ContaBancariaService contaBancariaService, PagamentoDinheiroRepository pagamentoDinheiroRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoDinheiroRepository = pagamentoDinheiroRepository;
+        this.clienteRepository = clienteRepository;
+        this.motoristaRepository = motoristaRepository;
     }
 
     public PagamentoDinheiro pagar(String nomeCliente, String nomeMotorista, double valor) {
         Motorista motoristaobjt;
         Cliente clienteobjt;
-        ClienteRepository clienteRepository = new ClienteRepository();
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
 
         motoristaobjt = motoristaRepository.motoristaFindByNome(nomeMotorista);
         clienteobjt = clienteRepository.clienteFindByNome(nomeCliente);

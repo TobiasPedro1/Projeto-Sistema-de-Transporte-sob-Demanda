@@ -8,6 +8,8 @@ import exceptions.CpfFalhaException;
 import exceptions.EntidadeNaoEncontrada;
 import exceptions.SalvaFalhaException;
 
+import java.util.List;
+
 public class ClienteService {
     private ClienteRepository clienteRepository;
 
@@ -16,7 +18,7 @@ public class ClienteService {
     }
 
     public void cadastrarCliente(Cliente cliente) {
-        if (validarCliente(cliente)) {
+        if (!validarCliente(cliente)) {
             throw new CpfFalhaException("CPF inválido ou já cadastrado.");
         } else {
             try {
@@ -65,6 +67,32 @@ public class ClienteService {
             return clienteRepository.clienteFindByCpf(nome);
         } catch (Exception e) {
             throw new CpfFalhaException("Cliente não encontrado com o Nome: " + nome);
+        }
+    }
+
+    public List<Cliente> listarClientes() {
+        try {
+            return clienteRepository.findALL();
+        } catch (Exception e) {
+            throw new CpfFalhaException("Nenhum cliente encontrado.");
+        }
+    }
+
+    public void removerCliente(String cpf) {
+        try {
+            clienteRepository.clienteDeleteByCpf(cpf);
+            System.out.println("Cliente removido com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao remover cliente.", e);
+        }
+    }
+
+    public void atualizarCliente(Cliente cliente) {
+        try {
+            clienteRepository.save(cliente);
+            System.out.println("Cliente atualizado com sucesso.");
+        } catch (Exception e) {
+            throw new SalvaFalhaException("Erro ao atualizar cliente.", e);
         }
     }
 }

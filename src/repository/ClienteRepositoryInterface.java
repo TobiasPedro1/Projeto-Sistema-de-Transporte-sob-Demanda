@@ -8,5 +8,5 @@ public interface ClienteRepositoryInterface {
     Cliente clienteFindByCpf(String cpf);
     Cliente clienteFindByNome(String nome);
     void save(Cliente cliente);
-    void clienteDeleteByName(String nome);
+    void clienteDeleteByCpf(String cpf);
 }

@@ -25,15 +25,17 @@ public class VeiculoService {
     private final VeiculoEconomicoRepository veiculoEconomicoRepository;
     private final VeiculoMotoRepository veiculoMotoRepository;
     private final VeiculoLuxoRepository veiculoLuxoRepository;
+    private final MotoristaRepository motoristaRepository;
 
     public VeiculoService(VeiculoRepository veiculoRepository, VeiculoSuvRepository veiculoSuvRepository,
                           VeiculoEconomicoRepository veiculoEconomicoRepository, VeiculoMotoRepository veiculoMotoRepository,
-                          VeiculoLuxoRepository veiculoLuxoRepository) {
+                          VeiculoLuxoRepository veiculoLuxoRepository, MotoristaRepository motoristaRepository) {
         this.veiculoRepository = veiculoRepository;
         this.veiculoSuvRepository = veiculoSuvRepository;
         this.veiculoEconomicoRepository = veiculoEconomicoRepository;
         this.veiculoMotoRepository = veiculoMotoRepository;
         this.veiculoLuxoRepository = veiculoLuxoRepository;
+        this.motoristaRepository = motoristaRepository;
     }
 
     public void save(Veiculo veiculo) {
@@ -82,11 +84,12 @@ public class VeiculoService {
         }
     }
 
-    public void cadastrarVeiculo(String tipo, String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
+    public void cadastrarVeiculo(String tipo, String placa, String marca, String modelo, int qtdDePassageiros, int ano, String nomeMotorista) {
+        Motorista motorista = motoristaRepository.motoristaFindByNome(nomeMotorista);
+
         if (motorista == null) {
-            throw new RuntimeException("Motorista não encontrado.");
+            System.out.println("Motorista não encontrado.");
+            return;
         }
 
         Veiculo veiculo;
@@ -98,8 +101,11 @@ public class VeiculoService {
             default -> throw new IllegalArgumentException("Tipo de veículo inválido.");
         }
 
+
         motorista.setVeiculo(veiculo);
+        motoristaRepository.save(motorista);
         veiculoRepository.save(veiculo);
+        System.out.println("Veículo cadastrado com sucesso!");
     }
 
 }

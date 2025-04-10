@@ -5,6 +5,8 @@ import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.Pagamento;
+import repository.ClienteRepository;
+import repository.MotoristaRepository;
 import repository.PagamentoRepository;
 
 import java.time.LocalDateTime;
@@ -13,13 +15,21 @@ import java.util.List;
 public class PagamentoService {
     private final ContaBancariaService contaBancariaService;
     private final PagamentoRepository pagamentoRepository;
+    private final MotoristaRepository motoristaRepository;
+    private final ClienteRepository clienteRepository;
 
-    public PagamentoService(ContaBancariaService contaBancariaService, PagamentoRepository pagamentoRepository) {
+    public PagamentoService(ContaBancariaService contaBancariaService, PagamentoRepository pagamentoRepository,
+                            MotoristaRepository motoristaRepository, ClienteRepository clienteRepository ) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoRepository = pagamentoRepository;
+        this.motoristaRepository = motoristaRepository;
+        this.clienteRepository = clienteRepository;
     }
 
-    public Pagamento pagarCorrida(Cliente cliente, Motorista motorista, double valor) {
+    public Pagamento pagarCorrida(String clienteNome, String motoristaNome, double valor) {
+        Motorista motorista = motoristaRepository.motoristaFindByNome(motoristaNome);
+        Cliente cliente = clienteRepository.clienteFindByNome(clienteNome);
+
         String numeroContaCliente = cliente.getConta().getNumeroConta();
         String numeroContaMotorista = motorista.getConta().getNumeroConta();
 

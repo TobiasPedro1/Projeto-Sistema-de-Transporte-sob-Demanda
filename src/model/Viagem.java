@@ -52,4 +52,14 @@ public class Viagem {
         return motorista;
     }
 
+    @Override
+    public String toString() {
+        return "Viagem{" +
+                "origem='" + origem + '\'' +
+                ", destino='" + destino + '\'' +
+                ", valor=" + valor +
+                ", veiculo=" + veiculo +
+                ", motorista=" + motorista +
+                '}';
+    }
 }

@@ -16,23 +16,25 @@ public class PagamentoCreditoService {
 
     private final ContaBancariaService contaBancariaService;
     private final PagamentoCreditoRepository pagamentoCreditoRepository;
+    private final ClienteRepository clienteRepository;
+    private final MotoristaRepository motoristaRepository;
 
-    public PagamentoCreditoService(ContaBancariaService contaBancariaService, PagamentoCreditoRepository pagamentoCreditoRepository) {
+    public PagamentoCreditoService(ContaBancariaService contaBancariaService, PagamentoCreditoRepository pagamentoCreditoRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoCreditoRepository = pagamentoCreditoRepository;
+        this.clienteRepository = clienteRepository;
+        this.motoristaRepository = motoristaRepository;
     }
 
     public PagamentoCredito pagar(String cliente, String motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
         Motorista motoristaobjt;
         Cliente clienteobjt;
-        ClienteRepository  clienteRepository = new ClienteRepository();
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
 
         motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
         clienteobjt = clienteRepository.clienteFindByNome(cliente);
 
-        var contaCliente = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
-        var contaMotorista = contaBancariaService.buscarContaPorChavePix(chavePixOuCartaoCliente);
+        var contaCliente = contaBancariaService.buscarContaPorChavePix(clienteobjt.getConta().getChavePix());
+        var contaMotorista = contaBancariaService.buscarContaPorChavePix(clienteobjt.getConta().getChavePix());
 
         if (contaCliente.getSaldo() >= valor) {
             contaCliente.sacar(valor);

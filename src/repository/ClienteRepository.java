@@ -45,8 +45,8 @@ public class ClienteRepository implements ClienteRepositoryInterface {
     }
 
     @Override
-    public void clienteDeleteByName(String nome){
-        if( clientes.removeIf(cliente -> cliente.getNome().equals(nome))){
+    public void clienteDeleteByCpf(String cpf){
+        if( clientes.removeIf(cliente -> cliente.getCpf().equals(cpf))){
             System.out.println("Cliente removido com sucesso!");
         }else{
             //lançar erro!

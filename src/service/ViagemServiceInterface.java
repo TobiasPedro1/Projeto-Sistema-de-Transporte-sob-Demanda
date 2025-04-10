@@ -14,5 +14,5 @@ public interface ViagemServiceInterface {
     void iniciarViagem();
     List<Viagem> listarViagens();
     void deleteByDestino(String destino);
-    Viagem finalizarViagem(Viagem viagem);
+    Viagem finalizarViagem(String destino);
 }
