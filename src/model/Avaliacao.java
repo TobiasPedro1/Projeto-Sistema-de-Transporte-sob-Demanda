@@ -1,6 +1,8 @@
 package model;
 
-public class Avaliacao {
+public class Avaliacao  implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String comentario;
     private int nota;
 

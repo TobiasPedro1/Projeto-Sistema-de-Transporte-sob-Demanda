@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Motorista extends Pessoa {
+public class Motorista extends Pessoa implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String habilitacao;
     private boolean validado;
     private boolean disponivel;
@@ -70,12 +72,12 @@ public class Motorista extends Pessoa {
     @Override
     public String toString() {
         return "{Motorista: " + super.toString() +
-                ", habilitacao='" + habilitacao +
-                ", validado=" + validado +
-                ", disponivel=" + disponivel +
-                ", conta=" + conta +
-                ", veiculo=" + veiculo +
-                ", avaliacoes=" + avaliacoes +
+                ", habilitacao: " + habilitacao +
+                ", validado: " + validado +
+                ", disponivel: " + disponivel +
+                ", conta: " + conta +
+                ", veiculo: " + veiculo +
+                ", avaliacoes: " + avaliacoes +
                 '}';
     }
 }

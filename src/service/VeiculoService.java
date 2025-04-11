@@ -101,7 +101,7 @@ public class VeiculoService {
             default -> throw new IllegalArgumentException("Tipo de veículo inválido.");
         }
 
-
+        veiculo.setMotorista(motorista);
         motorista.setVeiculo(veiculo);
         motoristaRepository.save(motorista);
         veiculoRepository.save(veiculo);

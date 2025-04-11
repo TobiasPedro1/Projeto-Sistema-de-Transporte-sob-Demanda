@@ -8,6 +8,7 @@ import model.ContaBancaria;
 import repository.ClienteRepository;
 import repository.MotoristaRepository;
 import repository.PagamentoPixRepository;
+import repository.PagamentoRepository;
 
 import java.util.List;
 
@@ -17,17 +18,21 @@ public class PagamentoPixService {
     private final PagamentoPixRepository pagamentoPixRepository;
     private final ClienteRepository clienteRepository;
     private final MotoristaRepository motoristaRepository;
+    private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoPixService(ContaBancariaService contaBancariaService, PagamentoPixRepository pagamentoPixRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
+    public PagamentoPixService(ContaBancariaService contaBancariaService, PagamentoPixRepository pagamentoPixRepository,
+                               ClienteRepository clienteRepository, MotoristaRepository motoristaRepository, PagamentoRepository pagamentoRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoPixRepository = pagamentoPixRepository;
         this.clienteRepository = clienteRepository;
         this.motoristaRepository = motoristaRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     public PagamentoPix pagarCorrida(String cliente, String motorista, double valor, String chavePixCliente, String chavePixMotorista) {
         // Buscar cliente e motorista
         Motorista motoristaobjt = motoristaRepository.motoristaFindByNome(motorista);
+
         if (motoristaobjt == null) {
             throw new IllegalArgumentException("Motorista não encontrado: " + motorista);
         }
@@ -57,6 +62,8 @@ public class PagamentoPixService {
             // Criar e salvar o pagamento
             PagamentoPix pagamento = new PagamentoPix(clienteobjt, motoristaobjt, valor, chavePixCliente);
             try {
+                motoristaRepository.save(motoristaobjt);
+                pagamentoRepository.save(pagamento);
                 pagamentoPixRepository.save(pagamento);
             } catch (Exception e) {
                 throw new SalvaFalhaException("Erro ao salvar pagamento.", e);

@@ -1,12 +1,21 @@
 package repository;
 
 import model.Cliente;
+import utils.SerializacaoUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteRepository implements ClienteRepositoryInterface {
+    private static final String caminhoArquivo = "dados/clientes.ser";
     List<Cliente> clientes = new ArrayList<>();
+
+    public ClienteRepository(){
+        this.clientes = SerializacaoUtil.carregarDados(caminhoArquivo);
+        if(this.clientes == null){
+            this.clientes = new ArrayList<>();
+        }
+    }
 
     @Override
     public List<Cliente> findALL(){
@@ -42,6 +51,7 @@ public class ClienteRepository implements ClienteRepositoryInterface {
     @Override
     public void save(Cliente cliente){
         clientes.add(cliente);
+        salvarDados();
     }
 
     @Override
@@ -52,6 +62,10 @@ public class ClienteRepository implements ClienteRepositoryInterface {
             //lançar erro!
             System.out.println("Cliente não encontrado!");
         }
+    }
+
+    private void salvarDados(){
+        SerializacaoUtil.salvarDados(clientes, caminhoArquivo);
     }
 
 }

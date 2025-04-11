@@ -50,9 +50,9 @@ public class Facade {
         this.veiculoLuxoService = new VeiculoLuxoService(veiculoLuxoRepository, viagemService, viagemRepository);
         this.avaliacaoService = new AvaliacaoService(avaliacaoRepository,  motoristaRepository,  clienteRepository,  motoristaService, clienteService);
         this.contaBancariaService = new ContaBancariaService(contaBancoRepository);
-        this.pagamentoCreditoService = new PagamentoCreditoService(contaBancariaService, pagamentoCreditoRepository, clienteRepository, motoristaRepository);
-        this.pagamentoDinheiroService = new PagamentoDinheiroService(contaBancariaService, pagamentoDinheiroRepository, clienteRepository, motoristaRepository);
-        this.pagamentoPixService = new PagamentoPixService(contaBancariaService,pagamentoPixRepository, clienteRepository, motoristaRepository);
+        this.pagamentoCreditoService = new PagamentoCreditoService(contaBancariaService, pagamentoCreditoRepository, clienteRepository, motoristaRepository, pagamentoRepository);
+        this.pagamentoDinheiroService = new PagamentoDinheiroService(contaBancariaService, pagamentoDinheiroRepository, clienteRepository, motoristaRepository, pagamentoRepository);
+        this.pagamentoPixService = new PagamentoPixService(contaBancariaService,pagamentoPixRepository, clienteRepository, motoristaRepository, pagamentoRepository);
         this.pagamentoService = new PagamentoService(contaBancariaService, pagamentoRepository, motoristaRepository, clienteRepository);
 
     }
@@ -236,7 +236,7 @@ public class Facade {
         viagemService.iniciarViagem();
     }
 
-    public Viagem chamarViagemEntrega( double valor, String origem, String destino, String encomenda) {
+    public Viagem chamarViagemEntrega( String origem, String destino, double valor, String encomenda) {
         return viagemService.chamarViagemEntrega( origem,destino ,valor , encomenda);
     }
 

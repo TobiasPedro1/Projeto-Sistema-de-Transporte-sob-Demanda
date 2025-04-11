@@ -2,7 +2,9 @@ package model;
 
 import service.MotoristaService;
 
-public class ViagemPassageiro extends Viagem {
+public class ViagemPassageiro extends Viagem implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String passageiro;
 
     public ViagemPassageiro(String origem, String destino, double valor, Veiculo veiculo, String passageiro, Motorista motorista) {

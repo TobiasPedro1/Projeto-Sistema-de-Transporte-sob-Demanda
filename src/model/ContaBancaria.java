@@ -63,8 +63,8 @@ public class ContaBancaria {
 
     @Override
     public String toString() {
-        return "ContaBancaria " +
-                ", numeroConta: " + numeroConta +
+        return
+                "numeroConta: " + numeroConta +
                 ", saldo: " + saldo +
                 ", Pix: " + pagamentoPix +
                 ", Cartão: " + pagamentoCredito;

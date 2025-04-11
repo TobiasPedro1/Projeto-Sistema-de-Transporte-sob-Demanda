@@ -35,8 +35,8 @@ public class MenuPagamentoCliente {
             teclado.nextLine();
 
             switch (opcao) {
-                case 1 -> pagarViagem();
-                case 2 -> pagarEntrega();
+//                case 1 -> pagarViagem();
+//                case 2 -> pagarEntrega();
 //                case 3 -> listarPagamentos();
 //                case 4 -> buscarPagamentoPorData();
 //                case 5 -> deletarPagamento();
@@ -46,58 +46,62 @@ public class MenuPagamentoCliente {
         } while (opcao != 0);
     }
 
-    public void pagarViagem(){
+    //receber valores por parametros
+    public void pagarViagem(String nomeClienteEntrada, String nomeMotoristaEntrada, double valorEntrada,
+                            String pixMotorista, String cartaoMotorista, String pixCliente, String cartaoCliente){
         System.out.println("========= Pagar Viagem =========");
-        System.out.print("Digite o nome do cliente: ");
-        String nomeCliente = teclado.nextLine();
-        System.out.println("digite o nome do motorista: ");
-        String nomeMotorista = teclado.nextLine();
-        System.out.print("Digite o valor da viagem: ");
-        double valor = teclado.nextDouble();
-        System.out.println("Informe o metodo de pagamento: Pix, Cartao ou Dinheiro");
+//        System.out.print("Digite o nome do cliente: ");
+        String nomeCliente = nomeClienteEntrada;
+//        System.out.print("digite o nome do motorista: ");
+        String nomeMotorista = nomeMotoristaEntrada;
+//        System.out.print("Confirme o valor da viagem: ");
+        double valor = valorEntrada;
+//        teclado.nextLine();
+        System.out.print("Informe o metodo de pagamento: Pix, Cartao ou Dinheiro: ");
         String metodoPagamento = teclado.nextLine().toLowerCase();
         String pixOuCartaoCliente = "";
         String pixOuCartaoMotorista = "";
         if(metodoPagamento.equals("cartao")){
-            System.out.println("Informe o Cartão do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Cartão ou cartão do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
+//            System.out.print("Informe o Cartão do cliente: ");
+            pixOuCartaoCliente = cartaoCliente;
+//            System.out.print("Informe o Cartão do motorista: ");
+            pixOuCartaoMotorista = cartaoMotorista;
             facade.pagarCorridaComCartao(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
         } else if (metodoPagamento.equals("pix")) {
-            System.out.println("Informe o Pix do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Pix do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
+//            System.out.print("Informe o Pix do cliente: ");
+            pixOuCartaoCliente = pixCliente;
+//            System.out.print("Informe o Pix do motorista: ");
+            pixOuCartaoMotorista = pixMotorista;
             facade.pagarCorridaComPix(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
         }else {
             facade.pagarCorridaComDinheiro(nomeCliente, nomeMotorista ,valor);
         }
     }
 
-    public void pagarEntrega(){
+    public void pagarEntrega(String nomeClienteEntrada, String nomeMotoristaEntrada, double valorEntrada,
+                             String pixMotorista, String cartaoMotorista, String pixCliente, String cartaoCliente){
         System.out.println("========= Pagar Viagem Entrga =========");
-        System.out.print("Digite o nome do cliente: ");
-        String nomeCliente = teclado.nextLine();
-        System.out.println("digite o nome do motorista: ");
-        String nomeMotorista = teclado.nextLine();
-        System.out.print("Digite o valor da viagem: ");
-        double valor = teclado.nextDouble();
+//        System.out.print("Digite o nome do cliente: ");
+        String nomeCliente = nomeClienteEntrada;
+//        System.out.println("digite o nome do motorista: ");
+        String nomeMotorista = nomeMotoristaEntrada;
+//        System.out.print("Digite o valor da viagem: ");
+        double valor = valorEntrada;
         System.out.println("Informe o metodo de pagamento: Pix, Cartao ou Dinheiro");
         String metodoPagamento = teclado.nextLine().toLowerCase();
         String pixOuCartaoCliente = "";
         String pixOuCartaoMotorista = "";
         if(metodoPagamento.equals("cartao")){
-            System.out.println("Informe o Cartão do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Cartão ou cartão do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
+//            System.out.println("Informe o Cartão do cliente:");
+            pixOuCartaoCliente = cartaoCliente;
+//            System.out.println("Informe o Cartão do motorista:");
+            pixOuCartaoMotorista = cartaoMotorista;
             facade.pagarCorridaComCartao(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
         } else if (metodoPagamento.equals("pix")) {
-            System.out.println("Informe o Pix do cliente:");
-            pixOuCartaoCliente = teclado.nextLine();
-            System.out.println("Informe o Pix do motorista:");
-            pixOuCartaoMotorista = teclado.nextLine();
+//            System.out.println("Informe o Pix do cliente:");
+            pixOuCartaoCliente = pixCliente;
+//            System.out.println("Informe o Pix do motorista:");
+            pixOuCartaoMotorista = pixMotorista;
             facade.pagarCorridaComPix(nomeCliente, nomeMotorista, valor, pixOuCartaoCliente, pixOuCartaoMotorista);
         }else {
             facade.pagarCorridaComDinheiro(nomeCliente, nomeMotorista ,valor);

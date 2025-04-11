@@ -64,7 +64,7 @@ public class ClienteService {
 
     public Cliente buscarClientePorNome(String nome) {
         try {
-            return clienteRepository.clienteFindByCpf(nome);
+            return clienteRepository.clienteFindByNome(nome);
         } catch (Exception e) {
             throw new CpfFalhaException("Cliente não encontrado com o Nome: " + nome);
         }

@@ -87,6 +87,8 @@ public class MotoristaService {
 
     public void removerMotorista(String cpf) {
         try {
+            Motorista motorista = motoristaRepository.motoristaFindByCpf(cpf);
+            motorista.setVeiculo(null);
             motoristaRepository.deleteByCpf(cpf);
 //            System.out.println("Motorista removido com sucesso.");
         } catch (Exception e) {

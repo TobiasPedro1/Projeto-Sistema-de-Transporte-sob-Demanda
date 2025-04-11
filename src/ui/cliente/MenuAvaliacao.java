@@ -12,14 +12,20 @@ public class MenuAvaliacao {
         this.teclado = new Scanner(System.in);
     }
 
-    public void avaliarViagemDoCliente(){
+    public void avaliarViagemDoCliente(String motoristaNome){
         System.out.println("========= Avaliar Viagem =========");
 //        System.out.print("Digite o nome do cliente: ");
 //        String nomeCliente = teclado.nextLine();
-        System.out.print("Digite o nome do motorista: ");
-        String nomeMotorista = teclado.nextLine();
+//        System.out.print("Digite o nome do motorista: ");
+        String nomeMotorista = motoristaNome;
         System.out.print("Digite a nota da viagem (1 a 5): ");
         int nota = teclado.nextInt();
+
+        if(nota < 1 || nota > 5){
+            System.out.println("Nota inválida! A nota deve ser entre 1 e 5.");
+            return;
+        }
+
         teclado.nextLine();
         System.out.print("Digite o comentario da viagem: ");
         String comentario = teclado.nextLine();

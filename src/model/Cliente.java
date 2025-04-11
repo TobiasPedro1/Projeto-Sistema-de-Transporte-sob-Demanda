@@ -1,9 +1,12 @@
 package model;
 
+import utils.SerializacaoUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cliente extends Pessoa {
+public class Cliente extends Pessoa implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private boolean validado;
     private ContaBancaria conta;
     private List<Avaliacao> avaliacao = new ArrayList<>();

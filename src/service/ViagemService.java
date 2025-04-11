@@ -3,9 +3,7 @@ package service;
 import exceptions.MotoristaNaoDisponivelException;
 import exceptions.ClienteNaoValidadoException;
 import exceptions.SalvaFalhaException;
-import model.Cliente;
-import model.Motorista;
-import model.Viagem;
+import model.*;
 import repository.ClienteRepository;
 import repository.MotoristaRepository;
 import repository.ViagemRepository;
@@ -52,26 +50,35 @@ public class ViagemService implements ViagemServiceInterface {
     }
 
     @Override
-    public Viagem chamarViagemEntrega(String origem, String destino, double valor, String encomenda) {
-        Motorista motorista = motoristaService.selecionarMotoristaAleatorio();
+   public Viagem chamarViagemEntrega(String origem, String destino, double valor, String encomenda) {
+    Motorista motorista;
 
-        if (motorista == null || !motorista.isDisponivel()) {
-            throw new MotoristaNaoDisponivelException("Nenhum motorista disponível no momento.");
-        }
-        System.out.println("Motorista Selecionado: " + motorista.getNome());
-        Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
-        motorista.setDisponivel(false);
-
-        try {
-            motoristaRepository.save(motorista);
-            viagemRepository.save(viagem);
-        } catch (Exception e) {
-            throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+    while (true) {
+        motorista = motoristaService.selecionarMotoristaAleatorio();
+        if (motorista == null) {
+            System.out.println("Nenhum motorista disponível para entrega no momento.");
+            return null;
         }
 
-        return viagem;
+        // Filtra apenas motoristas com VeiculoEconomico ou VeiculoMoto
+        if (motorista.getVeiculo() instanceof VeiculoEconomico || motorista.getVeiculo() instanceof VeiculoMoto) {
+            break;
+        }
     }
 
+    System.out.println("Motorista Selecionado: " + motorista.getNome());
+    Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);
+    motorista.setDisponivel(false);
+
+    try {
+        motoristaRepository.save(motorista);
+        viagemRepository.save(viagem);
+    } catch (Exception e) {
+        throw new SalvaFalhaException("Erro ao salvar dados da viagem.", e);
+    }
+
+    return viagem;
+}
     @Override
     public void iniciarViagem() {
         System.out.println("Viagem iniciada.");

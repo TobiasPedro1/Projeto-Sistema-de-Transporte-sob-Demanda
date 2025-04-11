@@ -8,6 +8,7 @@ import model.PagamentoCredito;
 import repository.ClienteRepository;
 import repository.MotoristaRepository;
 import repository.PagamentoCreditoRepository;
+import repository.PagamentoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,12 +19,15 @@ public class PagamentoCreditoService {
     private final PagamentoCreditoRepository pagamentoCreditoRepository;
     private final ClienteRepository clienteRepository;
     private final MotoristaRepository motoristaRepository;
+    private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoCreditoService(ContaBancariaService contaBancariaService, PagamentoCreditoRepository pagamentoCreditoRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
+    public PagamentoCreditoService(ContaBancariaService contaBancariaService, PagamentoCreditoRepository pagamentoCreditoRepository,
+                                   ClienteRepository clienteRepository, MotoristaRepository motoristaRepository, PagamentoRepository pagamentoRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoCreditoRepository = pagamentoCreditoRepository;
         this.clienteRepository = clienteRepository;
         this.motoristaRepository = motoristaRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     public PagamentoCredito pagar(String cliente, String motorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
@@ -43,6 +47,7 @@ public class PagamentoCreditoService {
 
             PagamentoCredito pagamento = new PagamentoCredito(clienteobjt, motoristaobjt, valor, chavePixOuCartaoCliente);
             try {
+                pagamentoRepository.save(pagamento);
                 pagamentoCreditoRepository.save(pagamento);
             } catch (Exception e){
                 throw new SalvaFalhaException("Erro ao salvar pagamento", e);

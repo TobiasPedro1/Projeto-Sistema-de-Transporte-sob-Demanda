@@ -1,6 +1,10 @@
 package model;
 
-public class Veiculo {
+import java.io.Serializable;
+
+public class Veiculo implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String placa;
     private String marca;
     private String modelo;
@@ -66,12 +70,12 @@ public class Veiculo {
 
     @Override
     public String toString() {
-        return "Veiculo: " +
+        return
                 "placa: " + placa  +
                 ", marca: " + marca +
                 ", modelo: " + modelo +
                 ", qtdDePassageiros: " + qtdDePassageiros +
                 ", ano: " + ano +
-                ", motorista:" + motorista ;
+                ", motorista:" + motorista.getNome() ;
     }
 }

@@ -1,7 +1,9 @@
 package model;
+import java.io.Serializable;
 
+public class Viagem implements Serializable {
+    private static final long serialVersionUID = 1L;
 
-public class Viagem {
     private String origem;
     private String destino;
     private double valor;

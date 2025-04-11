@@ -9,6 +9,7 @@ import model.PagamentoDinheiro;
 import repository.ClienteRepository;
 import repository.MotoristaRepository;
 import repository.PagamentoDinheiroRepository;
+import repository.PagamentoRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,12 +20,15 @@ public class PagamentoDinheiroService {
     private final PagamentoDinheiroRepository pagamentoDinheiroRepository;
     private final ClienteRepository clienteRepository;
     private final MotoristaRepository motoristaRepository;
+    private final PagamentoRepository pagamentoRepository;
 
-    public PagamentoDinheiroService(ContaBancariaService contaBancariaService, PagamentoDinheiroRepository pagamentoDinheiroRepository, ClienteRepository clienteRepository, MotoristaRepository motoristaRepository) {
+    public PagamentoDinheiroService(ContaBancariaService contaBancariaService, PagamentoDinheiroRepository pagamentoDinheiroRepository,
+                                    ClienteRepository clienteRepository, MotoristaRepository motoristaRepository, PagamentoRepository pagamentoRepository) {
         this.contaBancariaService = contaBancariaService;
         this.pagamentoDinheiroRepository = pagamentoDinheiroRepository;
         this.clienteRepository = clienteRepository;
         this.motoristaRepository = motoristaRepository;
+        this.pagamentoRepository = pagamentoRepository;
     }
 
     public PagamentoDinheiro pagar(String nomeCliente, String nomeMotorista, double valor) {
@@ -44,6 +48,7 @@ public class PagamentoDinheiroService {
 
             PagamentoDinheiro pagamento = new PagamentoDinheiro(clienteobjt, motoristaobjt, valor);
             try {
+                pagamentoRepository.save(pagamento);
                 pagamentoDinheiroRepository.save(pagamento);
             } catch (Exception e) {
                 throw new SalvaFalhaException("Erro ao salvar pagamento.", e);

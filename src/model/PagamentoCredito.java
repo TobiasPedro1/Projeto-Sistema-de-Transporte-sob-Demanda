@@ -1,6 +1,8 @@
 package model;
 
-public class PagamentoCredito extends Pagamento {
+public class PagamentoCredito extends Pagamento implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String numeroCartao;
 
     public PagamentoCredito(Cliente cliente, Motorista motorista, double valor, String numeroCartao) {

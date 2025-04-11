@@ -32,4 +32,14 @@ public class Pagamento {
     public LocalDateTime getDataHoraPagamento() {
         return dataHoraPagamento;
     }
+
+    @Override
+    public String toString() {
+        return "Pagamento{" +
+                "cliente: " + cliente.getNome() +
+                ", motorista: " + motorista.getNome() +
+                ", valor: " + valor +
+                ", dataHoraPagamento: " + dataHoraPagamento +
+                '}';
+    }
 }
