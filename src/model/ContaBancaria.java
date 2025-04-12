@@ -1,6 +1,10 @@
 package model;
 
-public class ContaBancaria {
+import java.io.Serializable;
+
+public class ContaBancaria implements Serializable  {
+    private static final long serialVersionUID = 1L;
+
     private String numeroConta;
     private Double saldo;
     private String pagamentoPix;

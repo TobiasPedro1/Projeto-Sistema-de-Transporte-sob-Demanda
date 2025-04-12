@@ -18,6 +18,10 @@ public class SerializacaoUtil {
     }
 
     public static <T> List<T> carregarDados(String caminhoArquivo) {
+        File arquivo = new File(caminhoArquivo);
+        if(!arquivo.exists()) return null;
+
+
         // Implementar lógica para carregar objeto de arquivo
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(caminhoArquivo))){
             return (List<T>) ois.readObject();

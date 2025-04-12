@@ -5,10 +5,13 @@ import exceptions.MotoristaInvalidoException;
 import exceptions.MotoristaNaoEncontradoException;
 import exceptions.SalvaFalhaException;
 import model.Avaliacao;
-import model.Cliente;
 import model.Motorista;
 import static utils.VerificaCpf.verificaCPF;
+
+import repository.AvaliacaoRepository;
+import repository.ContaBancoRepository;
 import repository.MotoristaRepository;
+import repository.VeiculoRepository;
 
 import java.util.List;
 import java.util.Random;
@@ -16,9 +19,16 @@ import java.util.Random;
 public class MotoristaService {
     //aleterar para repositorio assim que criado
     private final MotoristaRepository motoristaRepository;
+    private final ContaBancoRepository contaBancoRepository;
+    private final VeiculoRepository veiculoRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
 
-    public MotoristaService (MotoristaRepository motoristaRepository){
+    public MotoristaService (MotoristaRepository motoristaRepository, ContaBancoRepository contaBancoRepository,
+                             VeiculoRepository veiculoRepository, AvaliacaoRepository avaliacaoRepository) {
         this.motoristaRepository = motoristaRepository;
+        this.contaBancoRepository = contaBancoRepository;
+        this.veiculoRepository = veiculoRepository;
+        this.avaliacaoRepository = avaliacaoRepository;
     }
 
     public void cadastrarMotorista(Motorista motorista) {
@@ -88,9 +98,28 @@ public class MotoristaService {
     public void removerMotorista(String cpf) {
         try {
             Motorista motorista = motoristaRepository.motoristaFindByCpf(cpf);
-            motorista.setVeiculo(null);
+            if (motorista == null) {
+                throw new MotoristaNaoEncontradoException("Motorista não encontrado com o CPF: " + cpf);
+            }
+
+            if (motorista.getConta() != null) {
+                String conta = motorista.getConta().getNumeroConta();
+                contaBancoRepository.deleteByNumero(conta);
+            }
+
+            if (motorista.getVeiculo() != null) {
+                veiculoRepository.delete(motorista.getVeiculo());
+            }
+
+            if(motorista.getAvaliacoes() != null) {
+                for (Avaliacao avaliacao : motorista.getAvaliacoes()) {
+                    avaliacaoRepository.delete(avaliacao);
+                }
+            }
+
             motoristaRepository.deleteByCpf(cpf);
-//            System.out.println("Motorista removido com sucesso.");
+        } catch (MotoristaNaoEncontradoException e) {
+            throw e; // Repassa a exceção específica
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao remover motorista.", e);
         }

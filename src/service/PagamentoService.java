@@ -34,8 +34,8 @@ public class PagamentoService {
         String numeroContaMotorista = motorista.getConta().getNumeroConta();
 
         if (contaBancariaService.buscarContaPorNumero(numeroContaCliente).getSaldo() >= valor) {
-            contaBancariaService.buscarContaPorNumero(numeroContaCliente).sacar(valor);
-            contaBancariaService.buscarContaPorNumero(numeroContaMotorista).depositar(valor);
+            contaBancariaService.sacar(numeroContaCliente, valor);
+            contaBancariaService.depositar(numeroContaMotorista, valor);
             System.out.println("Pagamento efetuado com sucesso!");
 
             Pagamento pagamento = new Pagamento(cliente, motorista, valor);

@@ -2,7 +2,9 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class Pagamento {
+public class Pagamento implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Cliente cliente;
     private Motorista motorista;
     private double valor;

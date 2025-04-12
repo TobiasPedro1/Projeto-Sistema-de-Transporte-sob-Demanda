@@ -40,8 +40,8 @@ public class Facade {
         PagamentoPixRepository pagamentoPixRepository = new PagamentoPixRepository();
         PagamentoRepository pagamentoRepository = new PagamentoRepository();
 
-        this.clienteService = new ClienteService(clienteRepository);
-        this.motoristaService = new MotoristaService(motoristaRepository);
+        this.clienteService = new ClienteService(clienteRepository, contaBancoRepository);
+        this.motoristaService = new MotoristaService(motoristaRepository, contaBancoRepository, veiculoRepository, avaliacaoRepository);
         this.veiculoService = new VeiculoService(veiculoRepository, veiculoSuvRepository, veiculoEconomicoRepository, veiculoMotoRepository, veiculoLuxoRepository, motoristaRepository);
         this.viagemService = new ViagemService(clienteRepository, motoristaRepository, motoristaService, viagemRepository);
         this.veiculoSuvService = new VeiculoSuvService(veiculoSuvRepository, viagemService, viagemRepository);
@@ -78,10 +78,6 @@ public class Facade {
         clienteService.atualizarCliente(cliente);
     }
 
-    public boolean validarCliente(String cpf) {
-        return clienteService.validarCliente(clienteService.buscarClientePorCpf(cpf));
-    }
-
     public void cadastrarMotorista(String nome, String cpf, String habilitacao, String contaBancaria, double saldo, String pix, String cartao) {
             motoristaService.cadastrarMotorista(new Motorista(nome, cpf, habilitacao, new ContaBancaria(contaBancaria, saldo, pix, cartao)));
             contaBancariaService.criarConta(contaBancaria, saldo, pix, cartao);
@@ -99,14 +95,6 @@ public class Facade {
         motoristaService.removerMotorista(cpf);
     }
 
-    public boolean validarMotorista(String cpf) {
-        return motoristaService.validarMotorista(motoristaService.buscarMotoristaPorCpf(cpf));
-    }
-
-    public Motorista selecionarMotoristaAleatorio() {
-        return motoristaService.selecionarMotoristaAleatorio();
-    }
-
     public List<Motorista> listarMotoristas() {
         return motoristaService.listarMotoristas();
     }
@@ -115,105 +103,16 @@ public class Facade {
         veiculoService.cadastrarVeiculo(tipo, placa, marca, modelo, qtdDePassageiros, ano, cpfMotorista);
     }
 
-/*
-    public void cadastrarVeiculoEconomico(String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
-        VeiculoEconomico veiculoEconomico = new VeiculoEconomico(placa, marca, modelo, qtdDePassageiros, ano);
-        motorista.setVeiculo(veiculoEconomico);
-        veiculoService.save(veiculoEconomico);
-        veiculoEconomicoService.save(veiculoEconomico);
-    }
-
-    public void cadastrarVeiculoSuv(String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
-        VeiculoSuv veiculoSuv = new VeiculoSuv(placa, marca, modelo, qtdDePassageiros, ano);
-        motorista.setVeiculo(veiculoSuv);
-        veiculoService.save(veiculoSuv);
-        veiculoSuvService.save(veiculoSuv);
-    }
-
-    public void cadastrarVeiculoMoto(String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
-        VeiculoMoto veiculoMoto = new VeiculoMoto(placa, marca, modelo, qtdDePassageiros, ano);
-        motorista.setVeiculo(veiculoMoto);
-        veiculoService.save(veiculoMoto);
-        veiculoMotoService.save(veiculoMoto);
-    }
-
-    public void cadastrarVeiculoLuxo(String placa, String marca, String modelo, int qtdDePassageiros, int ano, String cpfMotorista) {
-        MotoristaRepository motoristaRepository = new MotoristaRepository();
-        Motorista motorista = motoristaRepository.motoristaFindByCpf(cpfMotorista);
-        VeiculoLuxo veiculoLuxo = new VeiculoLuxo(placa, marca, modelo, qtdDePassageiros, ano);
-        motorista.setVeiculo(veiculoLuxo);
-        veiculoService.save(veiculoLuxo);
-        veiculoLuxoService.save(veiculoLuxo);
-    }*/
-
-    // VER COMO VAI FICAR NO MENU DO CLIENTE (ALTERA PARA INDIVIDUAL OU NÃO)
-//    public Pagamento pagarCorrida(String cliente, String motorista, double valor, String metodoPagamento, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
-//        Cliente clienteobj = clienteService.buscarClientePorNome(cliente);
-//        Motorista motoristaobj = motoristaService.buscarMotoristaPorNome(motorista);
-//        return switch (metodoPagamento.toLowerCase()) {
-//            case "pix" -> pagamentoPixService.pagarCorrida(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-//            case "cartao" -> pagamentoCreditoService.pagar(clienteobj, motoristaobj, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-//            case "dinheiro" -> pagamentoDinheiroService.pagar(clienteobj, motoristaobj, valor);
-//            default -> throw new IllegalArgumentException("Método de pagamento inválido.");
-//        };
-//    }
-
     public PagamentoCredito pagarCorridaComCartao(String nomeCliente, String nomeMotorista, double valor, String chavePixOuCartaoCliente, String chavePixOuCartaoMotorista) {
         return pagamentoCreditoService.pagar(nomeCliente, nomeMotorista, valor, chavePixOuCartaoCliente, chavePixOuCartaoMotorista);
-    }
-
-    public PagamentoCredito procurarPagamentoCreditoPorData(LocalDateTime data) {
-        return pagamentoCreditoService.findByData(data);
-    }
-
-    public List<PagamentoCredito> listarPagamentosCredito() {
-        return pagamentoCreditoService.findAll();
-    }
-
-    public void deletarPagamentoCredito(PagamentoCredito pagamento) {
-        pagamentoCreditoService.delete(pagamento);
     }
 
     public PagamentoDinheiro pagarCorridaComDinheiro(String nomeCliente, String nomeMotorista, double valor) {
         return pagamentoDinheiroService.pagar(nomeCliente, nomeMotorista, valor);
     }
 
-    public PagamentoDinheiro procurarPagamentoDinheiroPorData(LocalDateTime data) {
-        return pagamentoDinheiroService.findByData(data);
-    }
-
-    public List<PagamentoDinheiro> listarPagamentosDinheiro() {
-        return pagamentoDinheiroService.findAll();
-    }
-
-    public void deletarPagamentoDinheiro(PagamentoDinheiro pagamento) {
-        pagamentoDinheiroService.delete(pagamento);
-    }
-
     public PagamentoPix pagarCorridaComPix(String nomeCliente, String nomeMotorista, double valor, String chavePixCliente, String chavePixMotorista) {
         return pagamentoPixService.pagarCorrida(nomeCliente, nomeMotorista, valor, chavePixCliente, chavePixMotorista);
-    }
-
-    public PagamentoPix procurarPagamentoPixPorChave(String chavePix) {
-        return pagamentoPixService.findByChavePix(chavePix);
-    }
-
-    public List<PagamentoPix> listarPagamentosPix() {
-        return pagamentoPixService.findAll();
-    }
-
-    public void deletarPagamentoPix(PagamentoPix pagamento) {
-        pagamentoPixService.delete(pagamento);
-    }
-
-    public Pagamento pagarCorrida(String clienteNome, String motoristaNome, double valor) {
-        return pagamentoService.pagarCorrida(clienteNome, motoristaNome, valor);
     }
 
     public List<Pagamento> procurarPagamentoPorData(LocalDateTime data) {
@@ -244,10 +143,6 @@ public class Facade {
         return viagemService.finalizarViagem(destino);
     }
 
-    public Viagem procurarViagemPorDestino(String destino) {
-        return viagemService.buscarViagemPorDestino(destino);
-    }
-
     public List<Viagem> listarViagens() {
         return viagemService.listarViagens();
     }
@@ -272,20 +167,6 @@ public class Facade {
         avaliacaoService.deletarAvaliacao(avaliacao);
     }
 
-    public List<VeiculoEconomico> listarVeiculosEconomicos() {
-        return veiculoEconomicoService.findAll();
-    }
-    public List<VeiculoSuv> listarVeiculosSuv() {
-        return veiculoSuvService.findAll();
-    }
-    public List<VeiculoMoto> listarVeiculosMoto() {
-        return veiculoMotoService.findAll();
-    }
-
-    public List<VeiculoLuxo> listarVeiculosLuxo() {
-        return veiculoLuxoService.findAll();
-    }
-
     public List<Veiculo> listarVeiculos() {
         return veiculoService.findAll();
     }
@@ -305,10 +186,6 @@ public class Facade {
 
     public ContaBancaria buscarContaPorNumConta(String numeroConta) {
         return contaBancariaService.buscarContaPorNumero(numeroConta);
-    }
-
-    public void depositarContaBancaria(String numeroConta, double saldo) {
-        contaBancariaService.depositar(numeroConta, saldo);
     }
 
     public void excluirContaBancaria(String numeroConta) {

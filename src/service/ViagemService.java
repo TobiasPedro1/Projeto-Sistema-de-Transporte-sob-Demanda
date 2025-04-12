@@ -51,20 +51,27 @@ public class ViagemService implements ViagemServiceInterface {
 
     @Override
    public Viagem chamarViagemEntrega(String origem, String destino, double valor, String encomenda) {
-    Motorista motorista;
+    Motorista motorista = null;
+    int tentativas = 0;
+    int limiteTentativas = 20;
 
-    while (true) {
-        motorista = motoristaService.selecionarMotoristaAleatorio();
-        if (motorista == null) {
-            System.out.println("Nenhum motorista disponível para entrega no momento.");
+        while (tentativas < limiteTentativas) {
+            motorista = motoristaService.selecionarMotoristaAleatorio();
+            if (motorista == null) {
+                System.out.println("Nenhum motorista disponível para entrega no momento.");
+                return null;
+            }
+            // Filtra apenas motoristas com VeiculoEconomico ou VeiculoMoto
+            if (motorista.getVeiculo() instanceof VeiculoEconomico || motorista.getVeiculo() instanceof VeiculoMoto) {
+                break;
+            }
+            tentativas++;
+        }
+
+        if (tentativas == limiteTentativas) {
+            System.out.println( "Nenhum motorista adequado encontrado. Verificar com adm se tem motoristas cadastrados com Veiculo do tipo Economico ou Moto.");
             return null;
         }
-
-        // Filtra apenas motoristas com VeiculoEconomico ou VeiculoMoto
-        if (motorista.getVeiculo() instanceof VeiculoEconomico || motorista.getVeiculo() instanceof VeiculoMoto) {
-            break;
-        }
-    }
 
     System.out.println("Motorista Selecionado: " + motorista.getNome());
     Viagem viagem = new Viagem(origem, destino, valor, motorista.getVeiculo(), motorista);

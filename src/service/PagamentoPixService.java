@@ -55,8 +55,10 @@ public class PagamentoPixService {
 
         // Verificar saldo e realizar pagamento
         if (contaCliente.getSaldo() >= valor) {
-            contaCliente.sacar(valor);
-            contaMotorista.depositar(valor);
+            contaBancariaService.sacar(contaCliente.getNumeroConta(), valor);
+            contaBancariaService.depositar(contaMotorista.getNumeroConta(), valor);
+//            contaCliente.sacar(valor);
+//            contaMotorista.depositar(valor);
             System.out.println("Pagamento efetuado com sucesso!");
 
             // Criar e salvar o pagamento

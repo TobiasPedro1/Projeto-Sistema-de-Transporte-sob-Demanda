@@ -41,8 +41,10 @@ public class PagamentoCreditoService {
         var contaMotorista = contaBancariaService.buscarContaPorChavePix(clienteobjt.getConta().getChavePix());
 
         if (contaCliente.getSaldo() >= valor) {
-            contaCliente.sacar(valor);
-            contaMotorista.depositar(valor);
+            contaBancariaService.sacar(contaCliente.getNumeroConta(), valor);
+            contaBancariaService.depositar(contaMotorista.getNumeroConta(), valor);
+//            contaCliente.sacar(valor);
+//            contaMotorista.depositar(valor);
             System.out.println("Pagamento com crédito efetuado com sucesso!");
 
             PagamentoCredito pagamento = new PagamentoCredito(clienteobjt, motoristaobjt, valor, chavePixOuCartaoCliente);

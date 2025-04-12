@@ -2,12 +2,24 @@ package repository;
 
 import exceptions.CpfFalhaException;
 import model.Motorista;
+import utils.SerializacaoUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MotoristaRepository implements MotoristaRepositoryInterface{
+    private static final String ARQUIVO = "C:\\Users\\pedro\\OneDrive\\Documentos\\JAVA\\Sistema de Transporte sob Demanda\\Projeto - Sistema de Transporte sob Demanda\\dados\\motoristas.ser";
+
     private static MotoristaRepository instance;
-    private List<Motorista> motoristas = new ArrayList<>();
+    private List<Motorista> motoristas;
+
+    public MotoristaRepository(){
+        this.motoristas = SerializacaoUtil.carregarDados(ARQUIVO);
+        if(this.motoristas == null){
+            this.motoristas = new ArrayList<>();
+        }
+    }
+
 
     @Override
     public List<Motorista> findALL(){
@@ -48,14 +60,19 @@ public class MotoristaRepository implements MotoristaRepositoryInterface{
     @Override
     public void save(Motorista motorista) {
         motoristas.add(motorista);
+        salvarDados();
     }
 
     @Override
     public void deleteByCpf(String nome) {
         if( motoristas.removeIf(motorista -> motorista.getCpf().equals(nome))){
+            salvarDados();
             System.out.println("Motorista removido com sucesso!");
 
         }
+    }
 
+    private void salvarDados(){
+        SerializacaoUtil.salvarDados(motoristas, ARQUIVO);
     }
 }

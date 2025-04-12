@@ -68,7 +68,7 @@ public class MenuCliente {
     public void chamarViagem(){
         try {
             System.out.println("========= Chamar Viagem =========");
-            System.out.println("Informe o endereço de origem da viagem: ");
+            System.out.print("Informe o endereço de origem da viagem: ");
             String origem = teclado.nextLine();
             System.out.print("Informe o endereço de destino da viagem: ");
             String destino = teclado.nextLine();
@@ -98,7 +98,7 @@ public class MenuCliente {
 
     }
 
-    public void chamarViagemEntrega(){
+    public void chamarViagemEntrega() {
         try {
             System.out.println("========= Chamar Viagem Entrega =========");
             System.out.print("Informe o nome do cliente: ");
@@ -113,7 +113,15 @@ public class MenuCliente {
             System.out.print("Digite o endereco de destino: ");
             String destino = teclado.nextLine();
 
-            Motorista motorista = facade.chamarViagemEntrega(origem, destino, valor, encomenda).getMotorista();
+            // Chama a viagem de entrega
+            var viagem = facade.chamarViagemEntrega(origem, destino, valor, encomenda);
+
+            // Verifica se a viagem foi criada
+            if (viagem == null || viagem.getMotorista() == null) {
+                return;
+            }
+
+            Motorista motorista = viagem.getMotorista();
             Cliente cliente = facade.buscarClientePorNome(nomeCliente);
 
             Thread.sleep(1000);
@@ -123,12 +131,11 @@ public class MenuCliente {
             Thread.sleep(1000);
 
             new MenuPagamentoCliente(facade).pagarEntrega(nomeCliente, motorista.getNome(), valor, motorista.getConta().getChavePix(),
-                    motorista.getConta().getCartaoCredito(), cliente.getConta().getChavePix(), cliente.getConta().getCartaoCredito() );
+                    motorista.getConta().getCartaoCredito(), cliente.getConta().getChavePix(), cliente.getConta().getCartaoCredito());
             new MenuAvaliacao(facade).avaliarViagemDoCliente(motorista.getNome());
         } catch (InterruptedException e) {
             System.out.println("A execução foi interrompida: " + e.getMessage());
         }
-//        facade.chamarViagemEntrega( origem, destino, valor, encomenda);
     }
 
 

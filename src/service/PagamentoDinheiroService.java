@@ -6,10 +6,7 @@ import exceptions.SalvaFalhaException;
 import model.Cliente;
 import model.Motorista;
 import model.PagamentoDinheiro;
-import repository.ClienteRepository;
-import repository.MotoristaRepository;
-import repository.PagamentoDinheiroRepository;
-import repository.PagamentoRepository;
+import repository.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,8 +39,10 @@ public class PagamentoDinheiroService {
         var contaMotorista = motoristaobjt.getConta();
 
         if (contaCliente.getSaldo() >= valor) {
-            contaCliente.sacar(valor);
-            contaMotorista.depositar(valor);
+//            contaCliente.sacar(valor);
+            contaBancariaService.sacar(contaCliente.getNumeroConta(), valor);
+            contaBancariaService.depositar(contaMotorista.getNumeroConta(), valor);
+//            contaMotorista.depositar(valor);
             System.out.println("Pagamento em dinheiro efetuado com sucesso!");
 
             PagamentoDinheiro pagamento = new PagamentoDinheiro(clienteobjt, motoristaobjt, valor);

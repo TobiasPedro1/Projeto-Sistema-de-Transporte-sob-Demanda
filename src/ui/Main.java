@@ -77,6 +77,7 @@ public class Main {
         System.out.println("Erro inesperado: " + e.getMessage());
     }finally {
         System.out.println("Sistema encerrado.");
+        System.out.println("Obrigado por usar nosso sistema!");
         teclado.close();
     }
 

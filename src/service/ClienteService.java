@@ -7,14 +7,17 @@ import repository.ClienteRepository;
 import exceptions.CpfFalhaException;
 import exceptions.EntidadeNaoEncontrada;
 import exceptions.SalvaFalhaException;
+import repository.ContaBancoRepository;
 
 import java.util.List;
 
 public class ClienteService {
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+    private final ContaBancoRepository contaBancoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) {
+    public ClienteService(ClienteRepository clienteRepository, ContaBancoRepository contaBancoRepository) {
         this.clienteRepository = clienteRepository;
+        this.contaBancoRepository = contaBancoRepository;
     }
 
     public void cadastrarCliente(Cliente cliente) {
@@ -80,8 +83,20 @@ public class ClienteService {
 
     public void removerCliente(String cpf) {
         try {
+            Cliente cliente = clienteRepository.clienteFindByCpf(cpf);
+
+            if (cliente == null) {
+                throw new EntidadeNaoEncontrada("Cliente não encontrado com o CPF: " + cpf);
+            }
+
+            if (cliente.getConta() != null) {
+                String conta = cliente.getConta().getNumeroConta();
+                contaBancoRepository.deleteByNumero(conta);
+            }
+
             clienteRepository.clienteDeleteByCpf(cpf);
-            System.out.println("Cliente removido com sucesso.");
+        } catch (EntidadeNaoEncontrada e) {
+            throw e; // Repassa a exceção específica
         } catch (Exception e) {
             throw new SalvaFalhaException("Erro ao remover cliente.", e);
         }

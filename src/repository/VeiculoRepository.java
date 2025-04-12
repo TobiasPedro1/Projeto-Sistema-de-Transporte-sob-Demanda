@@ -1,16 +1,27 @@
 package repository;
 
 import model.Veiculo;
+import utils.SerializacaoUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class VeiculoRepository implements VeiculoRepositoryInterface {
-    private final List<Veiculo> carros = new ArrayList<>();
+    private static final String ARQUIVO = "dados/veiculos.ser";
+    private List<Veiculo> carros;
+
+    public VeiculoRepository(){
+        this.carros = SerializacaoUtil.carregarDados(ARQUIVO);
+        if(this.carros == null){
+            this.carros = new ArrayList<>();
+        }
+    }
 
     @Override
     public void save(Veiculo carro) {
         carros.add(carro);
+        salvarDados();
     }
 
     @Override
@@ -29,5 +40,10 @@ public class VeiculoRepository implements VeiculoRepositoryInterface {
     @Override
     public void delete(Veiculo carro) {
         carros.remove(carro);
+        salvarDados();
+    }
+
+    private void salvarDados(){
+        SerializacaoUtil.salvarDados(carros, ARQUIVO);
     }
 }

@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteRepository implements ClienteRepositoryInterface {
-    private static final String caminhoArquivo = "dados/clientes.ser";
-    List<Cliente> clientes = new ArrayList<>();
+    private static final String ARQUVIO = "dados/clientes.ser";
+    List<Cliente> clientes;
 
     public ClienteRepository(){
-        this.clientes = SerializacaoUtil.carregarDados(caminhoArquivo);
+        this.clientes = SerializacaoUtil.carregarDados(ARQUVIO);
         if(this.clientes == null){
             this.clientes = new ArrayList<>();
         }
@@ -57,6 +57,7 @@ public class ClienteRepository implements ClienteRepositoryInterface {
     @Override
     public void clienteDeleteByCpf(String cpf){
         if( clientes.removeIf(cliente -> cliente.getCpf().equals(cpf))){
+            salvarDados();
             System.out.println("Cliente removido com sucesso!");
         }else{
             //lançar erro!
@@ -65,7 +66,7 @@ public class ClienteRepository implements ClienteRepositoryInterface {
     }
 
     private void salvarDados(){
-        SerializacaoUtil.salvarDados(clientes, caminhoArquivo);
+        SerializacaoUtil.salvarDados(clientes, ARQUVIO);
     }
 
 }
